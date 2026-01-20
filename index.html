@@ -7,196 +7,128 @@
     <link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@700&family=Montserrat:wght@400&display=swap" rel="stylesheet">
     <style>
         body {
-            margin: 0;
-            padding: 0;
-            display: flex;
-            justify-content: center;
-            align-items: center;
+            margin: 0; padding: 0;
+            display: flex; justify-content: center; align-items: center;
             min-height: 100vh;
             background: linear-gradient(135deg, #6F4E37 0%, #3C2A21 100%);
             font-family: 'Montserrat', sans-serif;
-            color: #fff;
-            text-align: center;
+            color: #fff; text-align: center;
         }
         .container {
             background: rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(10px);
-            padding: 30px;
-            border-radius: 20px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
-            width: 85%;
-            max-width: 400px;
+            backdrop-filter: blur(15px);
+            padding: 35px 25px; border-radius: 30px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.4);
+            width: 85%; max-width: 400px;
             border: 1px solid rgba(255,255,255,0.2);
         }
         .brand-name {
-            font-family: 'Comfortaa', cursive;
-            font-size: 0.9rem;
-            letter-spacing: 2px;
-            color: #FFD39A;
-            margin-bottom: 5px;
-            text-transform: uppercase;
-            opacity: 0.9;
+            font-family: 'Comfortaa', cursive; font-size: 0.9rem;
+            letter-spacing: 3px; color: #FFD39A;
+            margin-bottom: 5px; text-transform: uppercase;
         }
-        h1 {
-            font-family: 'Comfortaa', cursive;
-            font-size: 1.5rem;
+        .logo { font-size: 3.5rem; margin-bottom: 10px; filter: drop-shadow(0 0 10px #FFD39A); }
+        h1 { font-family: 'Comfortaa', cursive; font-size: 1.4rem; margin-bottom: 25px; }
+
+        #fortune-box {
+            min-height: 140px; display: flex; align-items: center; justify-content: center;
             margin-bottom: 20px;
-            color: #fff;
         }
+
         #fortune-text {
-            font-size: 1.3rem;
-            line-height: 1.5;
-            min-height: 100px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: bold;
-            margin: 20px 0;
-            color: #FFD39A;
+            font-size: 1.3rem; line-height: 1.6; font-weight: bold;
+            color: #FFD39A; text-shadow: 0 2px 4px rgba(0,0,0,0.3);
         }
+
         .btn {
-            background-color: #FFD39A;
-            color: #3C2A21;
-            border: none;
-            padding: 12px 25px;
-            border-radius: 50px;
-            font-weight: bold;
-            cursor: pointer;
-            text-transform: uppercase;
-            transition: transform 0.2s;
-            text-decoration: none;
-            display: inline-block;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            background-color: #FFD39A; color: #3C2A21; border: none;
+            padding: 16px 20px; border-radius: 50px; font-weight: bold;
+            cursor: pointer; text-transform: uppercase; width: 100%;
+            transition: 0.3s; box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+            font-size: 0.9rem;
         }
-        .btn:active { transform: scale(0.95); }
-        .logo { font-size: 3rem; margin-bottom: 5px; }
-        .footer-text { font-size: 0.8rem; margin-top: 20px; opacity: 0.6; }
+        .btn:disabled {
+            background-color: #555; color: #aaa; cursor: not-allowed; box-shadow: none;
+        }
+
+        .message-next {
+            font-size: 0.85rem; margin-top: 15px; color: #fff;
+            background: rgba(0,0,0,0.2); padding: 10px; border-radius: 10px;
+            display: none;
+        }
+
+        .footer-text { font-size: 0.75rem; margin-top: 30px; opacity: 0.5; }
     </style>
 </head>
 <body>
 
 <div class="container">
-    <div class="brand-name">V&M VENDING</div>
+    <div class="brand-name">V&M Vending</div>
     <div class="logo">☕</div>
     <h1>Твоят кафе-късмет</h1>
     
-    <div id="fortune-text">Зареждаме твоя късмет...</div>
+    <div id="fortune-box">
+        <div id="fortune-text">Натисни бутона, за да видиш своя късмет...</div>
+    </div>
     
-    <button class="btn" onclick="generateFortune()">Виж друг късмет</button>
+    <button id="draw-btn" class="btn" onclick="drawFortune()">Изтегли късмет за деня</button>
     
-    <p class="footer-text">С пожелание за прекрасен ден!</p>
+    <div id="next-message" class="message-next">
+        Вече изтегли своя късмет за днес. Ела пак утре за нова доза вдъхновение!
+    </div>
+    
+    <p class="footer-text">Наслади се на деня с V&M Vending</p>
 </div>
 
 <script>
     const fortunes = [
-     "Днешният ден ще бъде толкова силен, колкото е твоето кафе!",
+        "Днешният ден ще бъде толкова силен, колкото е твоето кафе!",
         "Усмихни се! Нещо хубаво те чака зад ъгъла.",
         "Кафето е прегръдка в чаша. Наслади му се!",
-        "Днес е идеалният ден за ново начало.",
-        "Твоята енергия е заразителна – разпръсквай я!",
-        "Ти си по-силен от всяко предизвикателство!",
-        "Успехът идва при тези, които не се отказват. Пий и действай!",
         "Днес ще получиш новина, която ще те зарадва.",
-        "Направи днешния ден невероятен!",
-        "Вярвай в себе си толкова, колкото вярваш в първото кафе за деня.",
-        "Малките стъпки днес водят до големи успехи утре.",
-        "Твоят ентусиазъм ще отвори нови врати днес.",
-        "Кафето не задава въпроси, кафето ни разбира.",
-        "Първо кафето, после задачите!",
-        "Всичко е възможно след една чаша добро кафе.",
-        "Животът е твърде кратък за лошо кафе и скучни хора.",
-        "Кафето: течното гориво за твоите мечти.",
-        "Днес те чака среща с човек, който ще ти донесе усмивка.",
-        "След тази чаша светът ще изглежда много по-хубав!",
-        "Прогноза за днес: 100% шанс за успех и аромат на кафе.",
-        "Очаквай неочаквана среща с интересен човек.",
-        "Днес късметът ще ти намигне в най-подходящия момент.",
-        "Паричен поток ще потече към теб съвсем скоро.",
-        "Щастието се крие в малките моменти – като този.",
+        "Твоята енергия е заразителна – разпръсквай я!",
+        "Успехът идва при тези, които не се отказват. Пий и действай!",
+        "Днес е идеалният ден за ново начало.",
         "Всяка глътка е крачка към една по-добра седмица.",
-        "Вечерта ще завърши с прекрасна изненада.",
-        "Днес е ден за приключения – бъди готов!",
-        "Някой мисли за теб с усмивка в този момент.",
-        "Твоето най-голямо желание е на път да се сбъдне.",
-        "Отвори очите си за малките чудеса днес.",
-        "Бъди промяната, която искаш да видиш в света.",
-        "Днес е чудесен ден да кажеш 'Обичам те' на някого.",
-        "Твоето добро дело днес ще ти се върне двойно.",
-        "Погледни към слънцето и остави сенките зад гърба си.",
-        "Креативността ти днес няма да има граници.",
-        "Днес ще откриеш отговор на въпрос, който те вълнува.",
-        "Слушай сърцето си – то знае верния път.",
-        "Ти заслужаваш всичкото щастие на света!",
-        "Не спирай, докато не се почувстваш горд със себе си.",
-        "Днешната чаша кафе е началото на твоя най-успешен ден!",
-        "Ще намериш изгубена вещ, която е важна за теб.",
-        "Време е да планираш следващото си пътешествие!",
-        "Твоето търпение ще бъде възнаградено много скоро.",
-        "Днес ще бъдеш вдъхновение за някой друг.",
-        "Няма невъзможни неща, има само недостатъчно кафе!",
-        "Любовта е във въздуха, усети я с всяка глътка.",
-        "Предстои ти покупка, за която отдавна мечтаеш.",
-        "Здравето и силата са твои верни спътници днес.",
-        "Днес е денят, в който ще довършиш нещо важно.",
-        "Очаквай обаждане, което ще промени плановете ти за добро.",
-        "Мисли смело – днес няма граници за теб!",
-        "Твоят чар е неустоим днес. Използвай го!",
-        "Ще получиш комплимент, който ще те държи усмихнат цял ден.",
-        "Време е да се поглезиш с нещо малко, но специално.",
-        "Нова идея ще светне в ума ти – запиши я!",
-        "Днес е идеалният момент да простиш и да продължиш.",
-        "Хармонията в дома ти ще ти донесе спокойствие.",
-        "Ти си архитектът на собственото си щастие.",
-        "Случайна среща ще се превърне в ценно приятелство.",
-        "Днешният ден ще ти донесе мир и вдъхновение.",
-        "Всяко предизвикателство е прикрита възможност.",
-        "Твоите усилия ще бъдат забелязани от правилните хора.",
-        "Днес е ден за танци, дори само в мислите ти.",
-        "Ще разбереш истина, която ще те направи по-свободен.",
-        "Твоят оптимизъм е ключът към успеха днес.",
-        "Всичко се подрежда в твоя полза, имай вяра.",
-        "Днес е ден за усмивки без причина.",
-        "Предстои ти успех в работата или в личен проект.",
-        "Очаквай подарък, който не е в кутия, а в жест.",
-        "Бъди смел – светът обича смелите!",
-        "Твоето присъствие прави деня на другите по-добър.",
-        "Днес ще откриеш нова любима песен или книга.",
-        "Спокойствието е твоята суперсила днес.",
-        "Животът те обича – отвърни му със същото.",
-        "Днес е денят да кажеш 'ДА' на нова възможност.",
-        "Твоят труд ще даде плодове по-рано от очакваното.",
-        "Ще прекараш незабравима вечер с любими хора.",
-        "Ти си уникален и това е твоята най-голяма сила.",
-        "Днес ще се чувстваш по-енергичен от всякога.",
-        "Късметът ти е стабилен – заложи на интуицията си.",
-        "Една добра дума днес ще ти отвори затворени врати.",
-        "Време е за почивка, макар и само за пет минути с това кафе.",
-        "Днес ще видиш резултата от едно старо твое решение.",
-        "Радвай се на малките победи, те водят до големите.",
-        "Твоето чувство за хумор ще спаси напрегната ситуация.",
-        "Всяко кафе е нов шанс да започнеш отначало.",
-        "Днес е ден за благодарност. Благодари и ще получиш още.",
-        "Твоят път е ясен, просто върви напред с усмивка.",
-        "Ще получиш признание за нещо, което правиш с любов.",
-        "Днес е идеално за дълга разходка и нови планове.",
-        "Твоите мечти са валидни – работи за тях!",
-        "Внезапен прилив на вдъхновение ще промени деня ти.",
-        "Бъди добър към себе си днес.",
-        "Очаквай малко чудо до края на деня.",
-        "Твоят глас ще бъде чут и разбран.",
-        "Днес е ден за победа над стар страх.",
-        "Ти си слънцето в нечий облачен ден.",
-        "Всичко, от което се нуждаеш, е вече в теб.",
-        "Наслади се на това кафе – заслужаваш го!",
-        "V&M Vending ти пожелава най-успешния ден досега!"
+        "Очаквай неочаквана среща с интересен човек.",
+        "Ти си по-силен от всяко предизвикателство!",
+        "Късметът е на твоя страна днес!",
+        "Една добра дума днес ще ти отвори затворени врати."
+        // Добави тук твоите 100 късмета...
     ];
 
-    function generateFortune() {
+    function drawFortune() {
+        const today = new Date().toDateString();
+        
+        // Избор на случаен късмет
         const randomIndex = Math.floor(Math.random() * fortunes.length);
-        document.getElementById('fortune-text').innerText = fortunes[randomIndex];
+        const selectedFortune = fortunes[randomIndex];
+
+        // Показване на късмета
+        document.getElementById('fortune-text').innerText = selectedFortune;
+
+        // Запаметяване в браузъра
+        localStorage.setItem('lastFortuneDate', today);
+        localStorage.setItem('savedFortune', selectedFortune);
+
+        updateUI();
     }
 
-    window.onload = generateFortune;
+    function updateUI() {
+        const today = new Date().toDateString();
+        const lastDate = localStorage.getItem('lastFortuneDate');
+        const savedFortune = localStorage.getItem('savedFortune');
+
+        if (lastDate === today) {
+            // Ако вече е теглено днес
+            document.getElementById('fortune-text').innerText = savedFortune;
+            document.getElementById('draw-btn').style.display = 'none';
+            document.getElementById('next-message').style.display = 'block';
+        }
+    }
+
+    // Проверка при зареждане на страницата
+    window.onload = updateUI;
 </script>
 
 </body>
