@@ -4,6 +4,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>V&M Vending - Твоят Късмет</title>
+    
+    <meta property="og:title" content="Моят кафе-късмет от V&M Vending" />
+    <meta property="og:description" content="Вземи своето кафе и виж какво ти е подготвил късметът днес!" />
+    <meta property="og:type" content="website" />
+
     <link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@700&family=Montserrat:wght@400&display=swap" rel="stylesheet">
     <style>
         body {
@@ -45,16 +50,29 @@
             padding: 16px 20px; border-radius: 50px; font-weight: bold;
             cursor: pointer; text-transform: uppercase; width: 100%;
             transition: 0.3s; box-shadow: 0 4px 15px rgba(0,0,0,0.3);
-            font-size: 0.9rem;
+            font-size: 0.9rem; margin-bottom: 10px;
         }
-        .btn:disabled {
-            background-color: #555; color: #aaa; cursor: not-allowed; box-shadow: none;
+
+        .share-area { display: none; margin-top: 10px; }
+
+        .btn-fb {
+            background-color: #1877F2; color: white; border: none;
+            padding: 12px; border-radius: 50px; font-size: 0.8rem;
+            cursor: pointer; width: 100%; margin-bottom: 8px;
+            font-weight: bold; transition: 0.3s;
+        }
+
+        .btn-share {
+            background: rgba(255, 211, 154, 0.1);
+            color: #FFD39A; border: 1px solid #FFD39A;
+            padding: 10px; border-radius: 50px; font-size: 0.8rem;
+            cursor: pointer; width: 100%; margin-bottom: 8px;
         }
 
         .message-next {
-            font-size: 0.85rem; margin-top: 15px; color: #fff;
+            font-size: 0.8rem; margin-top: 15px; color: #fff;
             background: rgba(0,0,0,0.2); padding: 10px; border-radius: 10px;
-            display: none;
+            opacity: 0.8;
         }
 
         .footer-text { font-size: 0.75rem; margin-top: 30px; opacity: 0.5; }
@@ -68,13 +86,17 @@
     <h1>Твоят кафе-късмет</h1>
     
     <div id="fortune-box">
-        <div id="fortune-text">Натисни бутона, за да видиш своя късмет...</div>
+        <div id="fortune-text">Натисни бутона, за да откриеш своя късмет...</div>
     </div>
     
     <button id="draw-btn" class="btn" onclick="drawFortune()">Изтегли късмет за деня</button>
     
-    <div id="next-message" class="message-next">
-        Вече изтегли своя късмет за днес. Ела пак утре за нова доза вдъхновение!
+    <div id="share-area" class="share-area">
+        <button class="btn-fb" onclick="shareOnFacebook()">Сподели във Facebook</button>
+        <button class="btn-share" onclick="shareOnSocial()">Още начини за споделяне 📲</button>
+        <div id="next-message" class="message-next">
+            Твоят късмет за днес е изтеглен. Ела пак утре!
+        </div>
     </div>
     
     <p class="footer-text">Наслади се на деня с V&M Vending</p>
@@ -87,31 +109,43 @@
         "Кафето е прегръдка в чаша. Наслади му се!",
         "Днес ще получиш новина, която ще те зарадва.",
         "Твоята енергия е заразителна – разпръсквай я!",
-        "Успехът идва при тези, които не се отказват. Пий и действай!",
-        "Днес е идеалният ден за ново начало.",
-        "Всяка глътка е крачка към една по-добра седмица.",
-        "Очаквай неочаквана среща с интересен човек.",
-        "Ти си по-силен от всяко предизвикателство!",
-        "Късметът е на твоя страна днес!",
-        "Една добра дума днес ще ти отвори затворени врати."
-        // Добави тук твоите 100 късмета...
+        "Успехът идва при тези, които не се отказват!",
+        "V&M Vending ти пожелава прекрасен ден!"
+        // Тук постави всички 100 късмета, които ти дадох по-рано
     ];
 
     function drawFortune() {
         const today = new Date().toDateString();
-        
-        // Избор на случаен късмет
         const randomIndex = Math.floor(Math.random() * fortunes.length);
         const selectedFortune = fortunes[randomIndex];
 
-        // Показване на късмета
         document.getElementById('fortune-text').innerText = selectedFortune;
 
-        // Запаметяване в браузъра
         localStorage.setItem('lastFortuneDate', today);
         localStorage.setItem('savedFortune', selectedFortune);
 
         updateUI();
+    }
+
+    function shareOnFacebook() {
+        const url = encodeURIComponent(window.location.href);
+        const fbUrl = `https://www.facebook.com/sharer/sharer.php?u=${url}`;
+        window.open(fbUrl, '_blank', 'width=600,height=400');
+    }
+
+    function shareOnSocial() {
+        const fortune = document.getElementById('fortune-text').innerText;
+        const shareData = {
+            title: 'V&M Vending Късмет',
+            text: `Моят късмет от кафето днес е: "${fortune}" ☕✨`,
+            url: window.location.href
+        };
+
+        if (navigator.share) {
+            navigator.share(shareData);
+        } else {
+            alert("Копирай късмета си: " + shareData.text);
+        }
     }
 
     function updateUI() {
@@ -120,14 +154,12 @@
         const savedFortune = localStorage.getItem('savedFortune');
 
         if (lastDate === today) {
-            // Ако вече е теглено днес
             document.getElementById('fortune-text').innerText = savedFortune;
             document.getElementById('draw-btn').style.display = 'none';
-            document.getElementById('next-message').style.display = 'block';
+            document.getElementById('share-area').style.display = 'block';
         }
     }
 
-    // Проверка при зареждане на страницата
     window.onload = updateUI;
 </script>
 
