@@ -22,9 +22,9 @@
             background: #FFD39A;
             border-bottom-left-radius: 20px;
             border-bottom-right-radius: 20px;
-            margin: 40px auto 10px; /* Място за парата отгоре */
+            margin: 40px auto 10px;
         }
-        .coffee-logo::after { /* Дръжка */
+        .coffee-logo::after {
             content: '';
             position: absolute; top: 5px; right: -12px;
             width: 12px; height: 18px;
@@ -50,7 +50,6 @@
             50% { opacity: 0.6; transform: translateY(-10px) scaleX(1.5); }
             100% { transform: translateY(-25px) scaleX(2); opacity: 0; }
         }
-        /* -------------------------- */
 
         .container {
             background: rgba(43, 24, 16, 0.6);
@@ -75,15 +74,22 @@
             position: relative; width: 280px; height: 180px;
             margin: 0 auto; border-radius: 20px; overflow: hidden;
             box-shadow: 0 10px 25px rgba(0,0,0,0.5);
-            background-image: url('https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?auto=format&fit=crop&w=400&q=80');
-            background-size: cover; background-position: center;
+            background-color: #fffcf2;
         }
         #fortune-overlay {
             position: absolute; width: 100%; height: 100%;
-            background: rgba(255, 252, 242, 0.92);
             display: flex; flex-direction: column; align-items: center; justify-content: center;
+            background-image: url('https://www.transparenttextures.com/patterns/paper-fibers.png');
         }
-        #fortune-text { color: #3e2723; font-weight: 600; font-size: 1.1rem; padding: 0 20px; line-height: 1.4; }
+        #fortune-text { 
+            color: #3e2723; 
+            font-family: 'Playfair Display', serif; 
+            font-style: italic; 
+            font-weight: 600; 
+            font-size: 1.2rem; 
+            padding: 0 20px; 
+            line-height: 1.4; 
+        }
         canvas { position: absolute; top: 0; left: 0; z-index: 2; touch-action: none; cursor: crosshair; }
 
         .photo-spot { border: 2px dashed rgba(255,211,154,0.3); border-radius: 50%; width: 50px; height: 50px; margin: 15px auto 5px; display: flex; align-items: center; justify-content: center; font-size: 1.3rem; }
@@ -103,7 +109,6 @@
             border-radius: 20px;
             font-size: 0.7rem;
             cursor: pointer;
-            transition: 0.3s;
             margin-top: 5px;
         }
 
@@ -115,7 +120,7 @@
 <body>
 
 <audio id="bgMusic" loop>
-    <source src="https://www.bensound.com/bensound-music/bensound-thejazzpiano.mp3" type="audio/mpeg">
+    <source src="https://www.mboxdrive.com/Massive%20x%20Touch%20Me.mp3" type="audio/mpeg">
 </audio>
 
 <div class="container">
@@ -123,9 +128,7 @@
     
     <div class="coffee-logo">
         <div class="steam-container">
-            <div class="steam"></div>
-            <div class="steam"></div>
-            <div class="steam"></div>
+            <div class="steam"></div><div class="steam"></div><div class="steam"></div>
         </div>
     </div>
     
@@ -141,7 +144,7 @@
         </div>
 
         <div class="photo-spot">📸</div>
-        <div class="photo-hint">Снимай своя момент и ни отбележи!</div>
+        <div class="photo-hint">Снимай своя момент!</div>
 
         <div class="share-section" id="shareSection">
             <div class="share-buttons">
@@ -154,17 +157,16 @@
 
     <div id="limit-message">
         <h2 style="color: #FFD39A;">Един късмет на ден! 😊</h2>
-        <p>Твоето кафе те очаква. Опитай пак утре!</p>
         <button class="test-btn" onclick="clearMemory()">🔓 ОТКЛЮЧИ ЗА ТЕСТ</button>
     </div>
     
-    <a href="viber://add?number=359896746996" class="report-btn">Проблем с машината? Пиши ни тук.</a>
+    <a href="viber://add?number=359896746996" class="report-btn">Проблем с машината? Пиши ни.</a>
     <div style="margin-top: 15px; font-size: 0.7rem; color: #8d6e63;">С любов от <strong>V&M VENDING</strong></div>
 </div>
 
 <script>
     const fortunes = [
-       // МОТИВАЦИОННИ (1-30)
+    // МОТИВАЦИОННИ
     "Твоят потенциал е безкраен – започни днес!",
     "Всяко голямо пътуване започва с първата крачка.",
     "Днес е идеалният ден за ново начало.",
@@ -196,7 +198,7 @@
     "Днес е денят на голямата крачка напред.",
     "Успехът ти е въпрос на време.",
 
-    // ЗАБАВНИ (31-80)
+    // ЗАБАВНИ
     "Днес ще имаш повече енергия от батерията на телефона си!",
     "Късметът те следи... скрий се, за да те намери!",
     "Ден без нито един „спешен“ имейл.",
@@ -248,7 +250,7 @@
     "Твоят чар днес е по-силен от 3 двойни еспресота.",
     "Днес ще откриеш, че имаш скрит талант... вероятно за нищоправене!",
 
-    // ЛЮБОВ И ЕМОЦИИ (81-110)
+    // ЛЮБОВ И ЕМОЦИИ
     "Сърцето ти ще забие по-бързо от неочаквана среща.",
     "Очаквай романтично обяснение в любов.",
     "Любовта е по-близо, отколкото си мислиш.",
@@ -280,7 +282,7 @@
     "Бъди готов за приключение за двама.",
     "Любовта ти носи сила и вдъхновение.",
 
-    // ЗДРАВЕ, БЛАГОДЕНСТВИЕ И ПЪТЕШЕСТВИЯ (111-131)
+    // ЗДРАВЕ И ПЪТЕШЕСТВИЯ
     "Здраве, силно като желязо.",
     "Енергия, която ще те държи буден до късно.",
     "Билет за самолет до мечтана дестинация.",
@@ -312,7 +314,10 @@
     let scratchedAmount = 0;
 
     function toggleMusic() {
-        if (music.paused) { music.play(); musicBtn.innerText = "🔊"; }
+        if (music.paused) { 
+            music.play().catch(e => console.log("Браузърът блокира автоматичното пускане. Потребителят трябва да кликне първо.")); 
+            musicBtn.innerText = "🔊"; 
+        }
         else { music.pause(); musicBtn.innerText = "🔇"; }
     }
 
@@ -334,7 +339,6 @@
 
     function initScratch() {
         if (checkLimit()) return;
-
         scratchedAmount = 0;
         document.getElementById('shareSection').style.display = 'none';
         ctx.globalCompositeOperation = 'source-over';
@@ -346,12 +350,18 @@
         document.getElementById('fbShare').href = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(pageUrl)}`;
         document.getElementById('vbShare').href = `viber://forward?text=${encodeURIComponent("Виж моя кафе-късмет тук: " + pageUrl)}`;
 
-        const gradient = ctx.createLinearGradient(0, 0, canvas.width, canvas.height);
-        gradient.addColorStop(0, '#8d6e63'); gradient.addColorStop(0.5, '#bcaaa4'); gradient.addColorStop(1, '#5d4037');
-        ctx.fillStyle = gradient;
+        // КЛАСИЧЕСКИ СРЕБРИСТ СКРЕЧ СЛОЙ
+        ctx.fillStyle = '#C0C0C0';
         ctx.fillRect(0, 0, canvas.width, canvas.height);
-        ctx.font = 'bold 16px Montserrat'; ctx.fillStyle = '#ffffff'; ctx.textAlign = 'center';
-        ctx.fillText('ИЗТЪРКАЙ ТУК ☕ ', canvas.width/2, canvas.height/2 + 7);
+        
+        // Малко шум за текстура
+        for (let i = 0; i < 400; i++) {
+            ctx.fillStyle = 'rgba(0,0,0,0.05)';
+            ctx.fillRect(Math.random() * canvas.width, Math.random() * canvas.height, 2, 2);
+        }
+
+        ctx.font = 'bold 16px Montserrat'; ctx.fillStyle = '#666'; ctx.textAlign = 'center';
+        ctx.fillText('ИЗТЪРКАЙ С МОНЕТА ☕ ', canvas.width/2, canvas.height/2 + 7);
     }
 
     function scratch(e) {
@@ -365,6 +375,7 @@
         scratchedAmount++;
         if (scratchedAmount > 20) {
             document.getElementById('shareSection').style.display = 'block';
+            // За финална версия махни коментара долу:
             // localStorage.setItem('last_vending_scratch', new Date().toDateString());
         }
     }
