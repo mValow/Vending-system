@@ -23,6 +23,7 @@
             width: 88%; max-width: 360px;
             border: 1px solid rgba(255, 211, 154, 0.2);
             box-shadow: 0 25px 50px rgba(0,0,0,0.6);
+            position: relative;
         }
         .brand-header {
             font-family: 'Comfortaa', cursive;
@@ -69,16 +70,55 @@
             z-index: 2;
             touch-action: none;
         }
+
+        /* Споделяне */
+        .share-section {
+            margin-top: 25px;
+            display: none; /* Показва се само след изтъркване */
+            animation: fadeIn 1s forwards;
+        }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        
+        .share-title { font-size: 0.8rem; margin-bottom: 10px; color: #FFD39A; }
+        .share-buttons { display: flex; justify-content: center; gap: 15px; }
+        .share-btn {
+            width: 45px; height: 45px;
+            border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            text-decoration: none; font-size: 1.2rem;
+            transition: 0.3s;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+        }
+        .fb { background: #1877F2; color: white; }
+        .vb { background: #7360f2; color: white; }
+        .ms { background: #0084FF; color: white; }
+        .share-btn:active { transform: scale(0.9); }
+
         .footer-brand {
             margin-top: 25px;
             font-size: 0.75rem;
             color: #8d6e63;
         }
+
+        .music-control {
+            position: absolute; top: 20px; right: 20px;
+            background: rgba(255, 211, 154, 0.2);
+            border: 1px solid rgba(255, 211, 154, 0.5);
+            color: #FFD39A; border-radius: 50%;
+            width: 35px; height: 35px; cursor: pointer;
+            display: flex; align-items: center; justify-content: center;
+            z-index: 10;
+        }
     </style>
 </head>
 <body>
 
+<audio id="bgMusic" loop>
+    <source src="https://www.bensound.com/bensound-music/bensound-thejazzpiano.mp3" type="audio/mpeg">
+</audio>
+
 <div class="container">
+    <button class="music-control" onclick="toggleMusic()" id="musicBtn">🔇</button>
     <div class="brand-header">V&M Vending</div>
     
     <div id="scratch-area">
@@ -88,6 +128,15 @@
                 <div id="fortune-text"></div>
             </div>
             <canvas id="scratch-canvas" width="290" height="190"></canvas>
+        </div>
+
+        <div class="share-section" id="shareSection">
+            <div class="share-title">Сподели своя късмет:</div>
+            <div class="share-buttons">
+                <a href="#" id="fbShare" target="_blank" class="share-btn fb">f</a>
+                <a href="#" id="vbShare" target="_blank" class="share-btn vb">📞</a>
+                <a href="#" id="msShare" target="_blank" class="share-btn ms">💬</a>
+            </div>
         </div>
     </div>
 
@@ -116,12 +165,19 @@
 
     const canvas = document.getElementById('scratch-canvas');
     const ctx = canvas.getContext('2d');
+    const music = document.getElementById('bgMusic');
+    const musicBtn = document.getElementById('musicBtn');
     let isDrawing = false;
+    let scratchedAmount = 0;
+
+    function toggleMusic() {
+        if (music.paused) { music.play(); musicBtn.innerText = "🔊"; }
+        else { music.pause(); musicBtn.innerText = "🔇"; }
+    }
 
     function checkLimit() {
         const lastDate = localStorage.getItem('last_scratch_date');
         const today = new Date().toDateString();
-
         if (lastDate === today) {
             document.getElementById('scratch-area').style.display = 'none';
             document.getElementById('limit-message').style.display = 'block';
@@ -132,18 +188,24 @@
 
     function initScratch() {
         if (checkLimit()) return;
-
         const textElem = document.getElementById('fortune-text');
-        textElem.innerText = fortunes[Math.floor(Math.random() * fortunes.length)];
+        const randomFortune = fortunes[Math.floor(Math.random() * fortunes.length)];
+        textElem.innerText = randomFortune;
+
+        // Подготовка на линковете за споделяне
+        const pageUrl = window.location.href;
+        const shareText = `Моят късмет от V&M Vending за днес е: "${randomFortune}" ☕✨ Виж своя тук: `;
+        
+        document.getElementById('fbShare').href = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(pageUrl)}`;
+        document.getElementById('vbShare').href = `viber://forward?text=${encodeURIComponent(shareText + pageUrl)}`;
+        document.getElementById('msShare').href = `fb-messenger://share?link=${encodeURIComponent(pageUrl)}`;
 
         const gradient = ctx.createLinearGradient(0, 0, canvas.width, canvas.height);
         gradient.addColorStop(0, '#8d6e63');
         gradient.addColorStop(0.5, '#bcaaa4');
         gradient.addColorStop(1, '#5d4037');
-        
         ctx.fillStyle = gradient;
         ctx.fillRect(0, 0, canvas.width, canvas.height);
-        
         ctx.font = 'bold 18px Montserrat';
         ctx.fillStyle = '#ffffff';
         ctx.textAlign = 'center';
@@ -152,19 +214,21 @@
 
     function scratch(e) {
         if (!isDrawing) return;
-        
         const rect = canvas.getBoundingClientRect();
         const x = (e.clientX || (e.touches && e.touches[0].clientX)) - rect.left;
         const y = (e.clientY || (e.touches && e.touches[0].clientY)) - rect.top;
-
         ctx.globalCompositeOperation = 'destination-out';
         ctx.beginPath();
         ctx.arc(x, y, 22, 0, Math.PI * 2);
         ctx.fill();
 
-        // Записваме, че потребителят е изтъркал късмета си за днес
-        const today = new Date().toDateString();
-        localStorage.setItem('last_scratch_date', today);
+        scratchedAmount++;
+        if (scratchedAmount > 20) {
+            document.getElementById('shareSection').style.display = 'block';
+            const today = new Date().toDateString();
+            localStorage.setItem('last_scratch_date', today);
+            if (music.paused && scratchedAmount < 30) { toggleMusic(); }
+        }
     }
 
     canvas.addEventListener('mousedown', () => isDrawing = true);
