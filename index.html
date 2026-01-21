@@ -2,13 +2,8 @@
 <html lang="bg">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>V&M Vending - Твоят Късмет</title>
-    
-    <meta property="og:title" content="Моят кафе-късмет от V&M Vending" />
-    <meta property="og:description" content="Вземи своето кафе и виж какво ти е подготвил късметът днес!" />
-    <meta property="og:type" content="website" />
-
     <link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@700&family=Montserrat:wght@400&display=swap" rel="stylesheet">
     <style>
         body {
@@ -18,173 +13,74 @@
             background: linear-gradient(135deg, #6F4E37 0%, #3C2A21 100%);
             font-family: 'Montserrat', sans-serif;
             color: #fff; text-align: center;
+            overflow: hidden;
         }
         .container {
             background: rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(15px);
-            padding: 35px 25px; border-radius: 30px;
-            box-shadow: 0 15px 35px rgba(0,0,0,0.4);
-            width: 85%; max-width: 400px;
+            backdrop-filter: blur(10px);
+            padding: 20px;
+            border-radius: 20px;
+            width: 90%; max-width: 350px;
             border: 1px solid rgba(255,255,255,0.2);
+            position: relative;
         }
         .brand-name {
-            font-family: 'Comfortaa', cursive; font-size: 0.9rem;
-            letter-spacing: 3px; color: #FFD39A;
-            margin-bottom: 5px; text-transform: uppercase;
+            font-family: 'Comfortaa', cursive;
+            font-size: 0.8rem; letter-spacing: 2px;
+            color: #FFD39A; margin-bottom: 5px;
+            text-transform: uppercase;
         }
-        .logo { font-size: 3.5rem; margin-bottom: 10px; filter: drop-shadow(0 0 10px #FFD39A); }
-        h1 { font-family: 'Comfortaa', cursive; font-size: 1.4rem; margin-bottom: 25px; }
-
-        /* ЕФЕКТ ЗА ДЪЛБОЧИНА НА КЪСМЕТА */
-        #fortune-box {
-            min-height: 140px; display: flex; align-items: center; justify-content: center;
-            margin-bottom: 25px;
-            background: rgba(0, 0, 0, 0.3); /* Тъмен фон */
-            border-radius: 20px;
-            padding: 15px;
-            /* Вътрешна сянка за ефект на вдлъбнатина */
-            box-shadow: inset 0 5px 15px rgba(0,0,0,0.6), 0 1px 1px rgba(255,255,255,0.1);
-            border: 1px solid rgba(255,255,255,0.05);
+        h1 { font-family: 'Comfortaa', cursive; font-size: 1.3rem; margin-bottom: 15px; }
+        
+        /* Зоната за изтъркване */
+        #scratch-container {
+            position: relative;
+            width: 280px;
+            height: 150px;
+            margin: 0 auto;
+            background: #fff; /* Цветът под покритието */
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: inset 0 0 10px rgba(0,0,0,0.2);
         }
-
         #fortune-text {
-            font-size: 1.2rem; line-height: 1.5; font-weight: bold;
-            color: #FFD39A; text-shadow: 0 2px 4px rgba(0,0,0,0.5);
-            transition: opacity 0.5s ease;
+            position: absolute;
+            width: 100%; height: 100%;
+            display: flex; align-items: center; justify-content: center;
+            color: #3C2A21; font-weight: bold; font-size: 1.1rem;
+            padding: 15px; box-sizing: border-box;
+            user-select: none;
         }
-
-        .btn {
-            background-color: #FFD39A; color: #3C2A21; border: none;
-            padding: 16px 20px; border-radius: 50px; font-weight: bold;
-            cursor: pointer; text-transform: uppercase; width: 100%;
-            transition: 0.3s; box-shadow: 0 4px 15px rgba(0,0,0,0.3);
-            font-size: 0.9rem; margin-bottom: 10px;
+        canvas {
+            position: absolute;
+            top: 0; left: 0;
+            cursor: crosshair;
+            touch-action: none; /* Предотвратява скролване при търкане */
         }
-        .btn:active { transform: scale(0.95); background-color: #e6be8a; }
-
-        .share-area { display: none; margin-top: 10px; }
-
-        .btn-fb {
-            background-color: #1877F2; color: white; border: none;
-            padding: 12px; border-radius: 50px; font-size: 0.8rem;
-            cursor: pointer; width: 100%; margin-bottom: 8px;
-            font-weight: bold; transition: 0.3s;
+        .btn-reset {
+            margin-top: 20px;
+            background: none; border: 1px solid #FFD39A;
+            color: #FFD39A; padding: 8px 15px;
+            border-radius: 20px; cursor: pointer; font-size: 0.8rem;
         }
-
-        .btn-share {
-            background: rgba(255, 211, 154, 0.1);
-            color: #FFD39A; border: 1px solid #FFD39A;
-            padding: 10px; border-radius: 50px; font-size: 0.8rem;
-            cursor: pointer; width: 100%; margin-bottom: 8px;
-        }
-
-        .message-next {
-            font-size: 0.8rem; margin-top: 15px; color: #fff;
-            background: rgba(0,0,0,0.4); padding: 12px; border-radius: 12px;
-            opacity: 0.9; border: 1px dashed rgba(255,255,255,0.2);
-        }
-
-        .footer-text { font-size: 0.75rem; margin-top: 30px; opacity: 0.5; }
+        .footer-text { font-size: 0.7rem; margin-top: 15px; opacity: 0.6; }
     </style>
 </head>
 <body>
 
-<audio id="scratch-sound" preload="auto">
-    <source src="https://www.soundjay.com/buttons/beep-29.mp3" type="audio/mpeg">
-</audio>
-
 <div class="container">
-    <div class="brand-name">V&M Vending</div>
-    <div class="logo">☕</div>
-    <h1>Твоят кафе-късмет</h1>
+    <div class="brand-name">V&M VENDING</div>
+    <h1>Изтъркай за късмет! 🍀</h1>
     
-    <div id="fortune-box">
-        <div id="fortune-text">Изтъркай своя късмет...</div>
+    <div id="scratch-container">
+        <div id="fortune-text"></div>
+        <canvas id="scratch-canvas" width="280" height="150"></canvas>
     </div>
-    
-    <button id="draw-btn" class="btn" onclick="drawFortune()">Изтъркай с монета 🪙</button>
-    
-    <div id="share-area" class="share-area">
-        <button class="btn-fb" onclick="shareOnFacebook()">Сподели във Facebook</button>
-        <button class="btn-share" onclick="shareOnSocial()">Още начини за споделяне 📲</button>
-        <div id="next-message" class="message-next">
-            Твоят късмет за днес е изтъркан. Ела пак утре!
-        </div>
-    </div>
-    
-    <p class="footer-text">Наслади се на деня с V&M Vending</p>
+
+    <button class="btn-reset" onclick="initScratch()">Ново късметче</button>
+    <p class="footer-text">Наслади се на твоето V&M кафе!</p>
 </div>
 
 <script>
     const fortunes = [
-        "Днешният ден ще бъде толкова силен, колкото е твоето кафе!",
-        "Усмихни се! Нещо хубаво те чака зад ъгъла.",
-        "Кафето е прегръдка в чаша. Наслади му се!",
-        "Днес ще получиш новина, която ще те зарадва.",
-        "Твоята енергия е заразителна – разпръсквай я!",
-        "Успехът идва при тези, които не се отказват!",
-        "V&M Vending ти пожелава прекрасен ден!",
-        "Очаквай неочакваното днес!",
-        "Всяко кафе е нов шанс за успех."
-    ];
-
-    function drawFortune() {
-        // Пускане на звука
-        const sound = document.getElementById('scratch-sound');
-        sound.currentTime = 0;
-        sound.play();
-
-        const today = new Date().toDateString();
-        const randomIndex = Math.floor(Math.random() * fortunes.length);
-        const selectedFortune = fortunes[randomIndex];
-
-        // Малка пауза, за да се усети "триенето"
-        document.getElementById('fortune-text').style.opacity = '0';
-        
-        setTimeout(() => {
-            document.getElementById('fortune-text').innerText = selectedFortune;
-            document.getElementById('fortune-text').style.opacity = '1';
-            
-            localStorage.setItem('lastFortuneDate', today);
-            localStorage.setItem('savedFortune', selectedFortune);
-            updateUI();
-        }, 500);
-    }
-
-    function shareOnFacebook() {
-        const url = encodeURIComponent(window.location.href);
-        const fbUrl = `https://www.facebook.com/sharer/sharer.php?u=${url}`;
-        window.open(fbUrl, '_blank', 'width=600,height=400');
-    }
-
-    function shareOnSocial() {
-        const fortune = document.getElementById('fortune-text').innerText;
-        const shareData = {
-            title: 'V&M Vending Късмет',
-            text: `Моят късмет от кафето днес е: "${fortune}" ☕✨`,
-            url: window.location.href
-        };
-        if (navigator.share) {
-            navigator.share(shareData);
-        } else {
-            alert("Копирай късмета си: " + shareData.text);
-        }
-    }
-
-    function updateUI() {
-        const today = new Date().toDateString();
-        const lastDate = localStorage.getItem('lastFortuneDate');
-        const savedFortune = localStorage.getItem('savedFortune');
-
-        if (lastDate === today) {
-            document.getElementById('fortune-text').innerText = savedFortune;
-            document.getElementById('draw-btn').style.display = 'none';
-            document.getElementById('share-area').style.display = 'block';
-        }
-    }
-
-    window.onload = updateUI;
-</script>
-
-</body>
-</html>
+        "Днешният
