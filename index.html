@@ -10,90 +10,101 @@
             margin: 0; padding: 0;
             display: flex; justify-content: center; align-items: center;
             min-height: 100vh;
-            background: linear-gradient(135deg, #6F4E37 0%, #3C2A21 100%);
+            background: linear-gradient(135deg, #3C2A21 0%, #1a110d 100%);
             font-family: 'Montserrat', sans-serif;
             color: #fff; text-align: center;
             overflow: hidden;
         }
         .container {
-            background: rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(10px);
-            padding: 20px;
-            border-radius: 20px;
-            width: 90%; max-width: 350px;
-            border: 1px solid rgba(255,255,255,0.2);
-            position: relative;
+            background: rgba(0, 0, 0, 0.4);
+            backdrop-filter: blur(15px);
+            padding: 25px;
+            border-radius: 30px;
+            width: 85%; max-width: 350px;
+            border: 1px solid rgba(255,211,154,0.3);
+            box-shadow: 0 20px 50px rgba(0,0,0,0.5);
         }
         .brand-name {
             font-family: 'Comfortaa', cursive;
-            font-size: 0.8rem; letter-spacing: 2px;
-            color: #FFD39A; margin-bottom: 5px;
+            font-size: 0.8rem; letter-spacing: 3px;
+            color: #FFD39A; margin-bottom: 10px;
             text-transform: uppercase;
         }
-        h1 { font-family: 'Comfortaa', cursive; font-size: 1.3rem; margin-bottom: 15px; }
+        h1 { font-family: 'Comfortaa', cursive; font-size: 1.2rem; margin-bottom: 20px; color: #fff; }
         
         /* Зоната за изтъркване */
         #scratch-container {
             position: relative;
             width: 280px;
-            height: 150px;
+            height: 180px;
             margin: 0 auto;
-            background: #fff; /* Цветът под покритието */
-            border-radius: 15px;
+            border-radius: 20px;
             overflow: hidden;
-            box-shadow: inset 0 0 10px rgba(0,0,0,0.2);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.4);
+            background-image: url('https://images.unsplash.com/photo-1509042239860-f550ce710b93?ixlib=rb-1.2.1&auto=format&fit=crop&w=400&q=80');
+            background-size: cover;
+            background-position: center;
         }
-        #fortune-text {
+        #fortune-overlay {
             position: absolute;
             width: 100%; height: 100%;
+            background: rgba(255, 255, 255, 0.85); /* Светъл фон под боята за четливост */
             display: flex; align-items: center; justify-content: center;
+        }
+        #fortune-text {
             color: #3C2A21; font-weight: bold; font-size: 1.1rem;
-            padding: 15px; box-sizing: border-box;
-            user-select: none;
+            padding: 20px; box-sizing: border-box;
+            user-select: none; line-height: 1.4;
         }
         canvas {
             position: absolute;
             top: 0; left: 0;
             cursor: crosshair;
-            touch-action: none; /* Предотвратява скролване при търкане */
+            touch-action: none;
+            z-index: 2;
         }
         .btn-reset {
-            margin-top: 20px;
-            background: none; border: 1px solid #FFD39A;
-            color: #FFD39A; padding: 8px 15px;
-            border-radius: 20px; cursor: pointer; font-size: 0.8rem;
+            margin-top: 25px;
+            background: #FFD39A; border: none;
+            color: #3C2A21; padding: 12px 25px;
+            border-radius: 25px; cursor: pointer; 
+            font-weight: bold; font-size: 0.9rem;
+            text-transform: uppercase;
+            box-shadow: 0 4px 15px rgba(255,211,154,0.3);
         }
-        .footer-text { font-size: 0.7rem; margin-top: 15px; opacity: 0.6; }
+        .footer-text { font-size: 0.7rem; margin-top: 20px; opacity: 0.5; font-style: italic; }
     </style>
 </head>
 <body>
 
 <div class="container">
     <div class="brand-name">V&M VENDING</div>
-    <h1>Изтъркай за късмет! 🍀</h1>
+    <h1>Твоят момент с кафе ☕</h1>
     
     <div id="scratch-container">
-        <div id="fortune-text"></div>
-        <canvas id="scratch-canvas" width="280" height="150"></canvas>
+        <div id="fortune-overlay">
+            <div id="fortune-text"></div>
+        </div>
+        <canvas id="scratch-canvas" width="280" height="180"></canvas>
     </div>
 
-    <button class="btn-reset" onclick="initScratch()">Ново късметче</button>
-    <p class="footer-text">Наслади се на твоето V&M кафе!</p>
+    <button class="btn-reset" onclick="initScratch()">Опитай пак</button>
+    <p class="footer-text">Всеки ден е нов късмет!</p>
 </div>
 
 <script>
+    // Тук сложи твоя голям списък със 100 късмета
     const fortunes = [
         "Днешният ден ще бъде толкова силен, колкото е твоето кафе!",
         "Усмихни се! Нещо хубаво те чака зад ъгъла.",
         "Кафето е прегръдка в чаша. Наслади му се!",
-        "Днес ще получиш новина, която ще те зарадва.",
-        "Твоята енергия е заразителна – разпръсквай я!",
-        "Успехът идва при тези, които не се отказват!",
+        "Очаквай неочаквана среща с интересен човек.",
+        "Днес късметът ще ти намигне в най-подходящия момент.",
+        "Паричен поток ще потече към теб съвсем скоро.",
+        "Щастието се крие в малките моменти – като този.",
+        "Ти си по-силен от всяко предизвикателство!",
         "Днес е идеалният ден за ново начало.",
-        "Някой мисли за теб с усмивка в този момент.",
-        "Твоето най-голямо желание е на път да се сбъдне.",
         "Наслади се на това кафе – заслужаваш го!"
-        // Тук можеш да добавиш всички останали 100 късмета...
     ];
 
     const canvas = document.getElementById('scratch-canvas');
@@ -101,49 +112,52 @@
     let isDrawing = false;
 
     function initScratch() {
-        // 1. Постави нов късмет
         const textElem = document.getElementById('fortune-text');
         textElem.innerText = fortunes[Math.floor(Math.random() * fortunes.length)];
 
-        // 2. Нарисувай "лотарийното" покритие
         ctx.globalCompositeOperation = 'source-over';
-        ctx.fillStyle = '#C0C0C0'; // Сребрист цвят
+        
+        // Създаваме градиент за покритието (да изглежда по-метално/лъскаво)
+        const gradient = ctx.createLinearGradient(0, 0, canvas.width, canvas.height);
+        gradient.addColorStop(0, '#ADB5BD');
+        gradient.addColorStop(0.5, '#DEE2E6');
+        gradient.addColorStop(1, '#6C757D');
+        
+        ctx.fillStyle = gradient;
         ctx.fillRect(0, 0, canvas.width, canvas.height);
         
-        // Добави малко текстура (точици)
-        ctx.fillStyle = '#A0A0A0';
-        for(let i=0; i<100; i++) {
-            ctx.fillRect(Math.random()*canvas.width, Math.random()*canvas.height, 2, 2);
+        // Добавяме малко "шум", за да прилича на скреч карта
+        for (let i = 0; i < 500; i++) {
+            ctx.fillStyle = 'rgba(255,255,255,0.1)';
+            ctx.fillRect(Math.random() * canvas.width, Math.random() * canvas.height, 1, 1);
         }
 
-        // Добави надпис върху покритието
-        ctx.font = 'bold 18px Arial';
-        ctx.fillStyle = '#666';
+        ctx.font = 'bold 20px Montserrat';
+        ctx.fillStyle = '#495057';
         ctx.textAlign = 'center';
-        ctx.fillText('ИЗТЪРКАЙ ТУК', canvas.width/2, canvas.height/2 + 7);
+        ctx.fillText('ИЗТЪРКАЙ ТУК', canvas.width/2, canvas.height/2 + 10);
     }
 
     function scratch(e) {
         if (!isDrawing) return;
         
         const rect = canvas.getBoundingClientRect();
-        const x = (e.clientX || e.touches[0].clientX) - rect.left;
-        const y = (e.clientY || e.touches[0].clientY) - rect.top;
+        const x = (e.clientX || (e.touches && e.touches[0].clientX)) - rect.left;
+        const y = (e.clientY || (e.touches && e.touches[0].clientY)) - rect.top;
 
         ctx.globalCompositeOperation = 'destination-out';
         ctx.beginPath();
-        ctx.arc(x, y, 20, 0, Math.PI * 2);
+        ctx.arc(x, y, 25, 0, Math.PI * 2); // По-голям радиус на търкане за удобство
         ctx.fill();
     }
 
     canvas.addEventListener('mousedown', () => isDrawing = true);
-    canvas.addEventListener('touchstart', () => isDrawing = true);
+    canvas.addEventListener('touchstart', (e) => { isDrawing = true; e.preventDefault(); });
     window.addEventListener('mouseup', () => isDrawing = false);
     window.addEventListener('touchend', () => isDrawing = false);
     canvas.addEventListener('mousemove', scratch);
-    canvas.addEventListener('touchmove', scratch);
+    canvas.addEventListener('touchmove', (e) => { scratch(e); e.preventDefault(); });
 
-    // Стартирай първоначално
     initScratch();
 </script>
 
