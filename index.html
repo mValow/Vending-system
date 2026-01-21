@@ -14,181 +14,48 @@
             font-family: 'Montserrat', sans-serif;
             color: #f3e5f5; text-align: center;
         }
+
+        /* --- АНИМИРАНО ЛОГО ЧАША --- */
+        .coffee-logo {
+            position: relative;
+            width: 50px; height: 35px;
+            background: #FFD39A;
+            border-bottom-left-radius: 20px;
+            border-bottom-right-radius: 20px;
+            margin: 40px auto 10px; /* Място за парата отгоре */
+        }
+        .coffee-logo::after { /* Дръжка */
+            content: '';
+            position: absolute; top: 5px; right: -12px;
+            width: 12px; height: 18px;
+            border: 4px solid #FFD39A;
+            border-radius: 50%;
+        }
+        .steam-container {
+            position: absolute; top: -30px; left: 50%;
+            transform: translateX(-50%);
+            display: flex; gap: 8px;
+        }
+        .steam {
+            width: 4px; height: 20px;
+            background: rgba(255, 255, 255, 0.4);
+            border-radius: 5px;
+            animation: steamAnim 2s infinite ease-in-out;
+        }
+        .steam:nth-child(2) { animation-delay: 0.4s; }
+        .steam:nth-child(3) { animation-delay: 0.8s; }
+
+        @keyframes steamAnim {
+            0% { transform: translateY(0) scaleX(1); opacity: 0; }
+            50% { opacity: 0.6; transform: translateY(-10px) scaleX(1.5); }
+            100% { transform: translateY(-25px) scaleX(2); opacity: 0; }
+        }
+        /* -------------------------- */
+
         .container {
             background: rgba(43, 24, 16, 0.6);
             backdrop-filter: blur(12px);
             padding: 25px 15px;
             border-radius: 40px;
             width: 90%; max-width: 360px;
-            border: 1px solid rgba(255, 211, 154, 0.2);
-            box-shadow: 0 25px 50px rgba(0,0,0,0.6);
-            position: relative;
-            margin: 20px 0;
-        }
-        .brand-header {
-            font-family: 'Comfortaa', cursive;
-            font-size: 0.8rem; letter-spacing: 3px;
-            color: #d7ccc8; margin-bottom: 5px;
-            text-transform: uppercase;
-        }
-        h1 { font-family: 'Playfair Display', serif; font-style: italic; font-size: 1.4rem; margin-bottom: 20px; color: #FFD39A; }
-        
-        #scratch-container {
-            position: relative; width: 280px; height: 180px;
-            margin: 0 auto; border-radius: 20px; overflow: hidden;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.5);
-            background-image: url('https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?auto=format&fit=crop&w=400&q=80');
-            background-size: cover; background-position: center;
-        }
-        #fortune-overlay {
-            position: absolute; width: 100%; height: 100%;
-            background: rgba(255, 252, 242, 0.92);
-            display: flex; flex-direction: column; align-items: center; justify-content: center;
-        }
-        #fortune-text { color: #3e2723; font-weight: 600; font-size: 1.1rem; padding: 0 20px; line-height: 1.4; }
-        canvas { position: absolute; top: 0; left: 0; z-index: 2; touch-action: none; }
-
-        /* Лоялност и снимка */
-        .loyalty-info { margin-top: 20px; font-size: 0.75rem; color: #FFD39A; background: rgba(255,255,255,0.05); padding: 10px; border-radius: 15px; }
-        .photo-spot { border: 2px dashed rgba(255,211,154,0.3); border-radius: 50%; width: 60px; height: 60px; margin: 15px auto; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; }
-
-        /* Споделяне */
-        .share-section { margin-top: 20px; display: none; animation: fadeIn 1s forwards; }
-        .share-buttons { display: flex; justify-content: center; gap: 12px; margin-top: 10px; }
-        .share-btn { width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; text-decoration: none; font-size: 1.1rem; box-shadow: 0 4px 10px rgba(0,0,0,0.3); }
-        .fb { background: #1877F2; color: white; }
-        .vb { background: #7360f2; color: white; }
-
-        /* Помощ / Проблем */
-        .report-btn { display: inline-block; margin-top: 20px; color: #bcaaa4; font-size: 0.7rem; text-decoration: underline; cursor: pointer; }
-
-        .music-control { position: absolute; top: 15px; right: 15px; background: rgba(255, 211, 154, 0.1); border: 1px solid rgba(255, 211, 154, 0.3); color: #FFD39A; border-radius: 50%; width: 30px; height: 30px; cursor: pointer; z-index: 10; font-size: 0.8rem; }
-        #limit-message { display: none; padding: 30px 10px; }
-    </style>
-</head>
-<body>
-
-<audio id="bgMusic" loop>
-    <source src="https://www.bensound.com/bensound-music/bensound-thejazzpiano.mp3" type="audio/mpeg">
-</audio>
-
-<div class="container">
-    <button class="music-control" onclick="toggleMusic()" id="musicBtn">🔇</button>
-    <div class="brand-header">V&M Vending</div>
-    
-    <div id="scratch-area">
-        <h1>Твоят кафе-късмет ✨</h1>
-        <div id="scratch-container">
-            <div id="fortune-overlay">
-                <div id="fortune-text"></div>
-            </div>
-            <canvas id="scratch-canvas" width="280" height="180"></canvas>
-        </div>
-
-        <div class="photo-spot" title="Сложи чашата тук за снимка">📸</div>
-        <div style="font-size: 0.65rem; opacity: 0.7;">Сложи чашата пред екрана за идеалното стори!</div>
-
-        <div class="share-section" id="shareSection">
-            <div class="share-buttons">
-                <a href="#" id="fbShare" target="_blank" class="share-btn fb">f</a>
-                <a href="#" id="vbShare" target="_blank" class="share-btn vb">📞</a>
-            </div>
-            <div class="loyalty-info">
-                🎁 <strong>БОНУС:</strong> Събери 10 снимки на различни късмети и вземи <strong>БЕЗПЛАТНО</strong> кафе!
-            </div>
-        </div>
-    </div>
-
-    <div id="limit-message">
-        <h2 style="color: #FFD39A;">Един късмет на ден е достатъчен! 😊</h2>
-        <p>Твоето кафе те очаква. Опитай пак утре!</p>
-    </div>
-    
-  <a href="viber://add?number=359896746996" class="report-btn">Проблем с машината? Пиши ни тук.</a>
-    <div style="margin-top: 15px; font-size: 0.7rem; color: #8d6e63;">С любов от <strong>V&M VENDING</strong></div>
-</div>
-
-<script>
-    const fortunes = [
-        "Днешният ден ще бъде толкова силен, колкото е твоето кафе!",
-        "Усмихни се! Нещо хубаво те чака зад ъгъла.",
-        "Кафето е прегръдка в чаша. Наслади му се!",
-        "Днес ще получиш новина, която ще те зарадва.",
-        "Успехът идва при тези, които не се отказват!",
-        "Щастието се крие в малките моменти – като този.",
-        "Ти заслужаваш всичкото щастие на света!",
-        "Всяко кафе е нов шанс да започнеш отначало.",
-        "Късметът днес е на твоя страна!",
-        "Предстои ти среща, която ще те усмихне."
-    ];
-
-    const canvas = document.getElementById('scratch-canvas');
-    const ctx = canvas.getContext('2d');
-    const music = document.getElementById('bgMusic');
-    const musicBtn = document.getElementById('musicBtn');
-    let isDrawing = false;
-    let scratchedAmount = 0;
-
-    function toggleMusic() {
-        if (music.paused) { music.play(); musicBtn.innerText = "🔊"; }
-        else { music.pause(); musicBtn.innerText = "🔇"; }
-    }
-
-    function checkLimit() {
-        const lastDate = localStorage.getItem('last_vending_scratch');
-        const today = new Date().toDateString();
-        if (lastDate === today) {
-            document.getElementById('scratch-area').style.display = 'none';
-            document.getElementById('limit-message').style.display = 'block';
-            return true;
-        }
-        return false;
-    }
-
-    function initScratch() {
-        if (checkLimit()) return;
-        const textElem = document.getElementById('fortune-text');
-        const randomFortune = fortunes[Math.floor(Math.random() * fortunes.length)];
-        textElem.innerText = randomFortune;
-
-        const pageUrl = window.location.href;
-        const shareText = `Моят късмет от V&M Vending за днес: "${randomFortune}" ☕ Виж своя тук: `;
-        document.getElementById('fbShare').href = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(pageUrl)}`;
-        document.getElementById('vbShare').href = `viber://forward?text=${encodeURIComponent(shareText + pageUrl)}`;
-
-        const gradient = ctx.createLinearGradient(0, 0, canvas.width, canvas.height);
-        gradient.addColorStop(0, '#8d6e63'); gradient.addColorStop(0.5, '#bcaaa4'); gradient.addColorStop(1, '#5d4037');
-        ctx.fillStyle = gradient;
-        ctx.fillRect(0, 0, canvas.width, canvas.height);
-        ctx.font = 'bold 16px Montserrat'; ctx.fillStyle = '#ffffff'; ctx.textAlign = 'center';
-        ctx.fillText('ИЗТЪРКАЙ ТУК ☕ ', canvas.width/2, canvas.height/2 + 7);
-    }
-
-    function scratch(e) {
-        if (!isDrawing) return;
-        const rect = canvas.getBoundingClientRect();
-        const x = (e.clientX || (e.touches && e.touches[0].clientX)) - rect.left;
-        const y = (e.clientY || (e.touches && e.touches[0].clientY)) - rect.top;
-        ctx.globalCompositeOperation = 'destination-out';
-        ctx.beginPath(); ctx.arc(x, y, 22, 0, Math.PI * 2); ctx.fill();
-
-        scratchedAmount++;
-        if (scratchedAmount > 25) {
-            document.getElementById('shareSection').style.display = 'block';
-            localStorage.setItem('last_vending_scratch', new Date().toDateString());
-            if (music.paused && scratchedAmount < 35) { toggleMusic(); }
-        }
-    }
-
-    canvas.addEventListener('mousedown', () => isDrawing = true);
-    canvas.addEventListener('touchstart', (e) => { isDrawing = true; e.preventDefault(); });
-    window.addEventListener('mouseup', () => isDrawing = false);
-    window.addEventListener('touchend', () => isDrawing = false);
-    canvas.addEventListener('mousemove', scratch);
-    canvas.addEventListener('touchmove', (e) => { scratch(e); e.preventDefault(); });
-
-    initScratch();
-</script>
-
-</body>
-</html>
+            border: 1px solid rgba(255, 211, 154,
