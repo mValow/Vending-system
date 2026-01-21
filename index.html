@@ -83,4 +83,69 @@
 
 <script>
     const fortunes = [
-        "Днешният
+        "Днешният ден ще бъде толкова силен, колкото е твоето кафе!",
+        "Усмихни се! Нещо хубаво те чака зад ъгъла.",
+        "Кафето е прегръдка в чаша. Наслади му се!",
+        "Днес ще получиш новина, която ще те зарадва.",
+        "Твоята енергия е заразителна – разпръсквай я!",
+        "Успехът идва при тези, които не се отказват!",
+        "Днес е идеалният ден за ново начало.",
+        "Някой мисли за теб с усмивка в този момент.",
+        "Твоето най-голямо желание е на път да се сбъдне.",
+        "Наслади се на това кафе – заслужаваш го!"
+        // Тук можеш да добавиш всички останали 100 късмета...
+    ];
+
+    const canvas = document.getElementById('scratch-canvas');
+    const ctx = canvas.getContext('2d');
+    let isDrawing = false;
+
+    function initScratch() {
+        // 1. Постави нов късмет
+        const textElem = document.getElementById('fortune-text');
+        textElem.innerText = fortunes[Math.floor(Math.random() * fortunes.length)];
+
+        // 2. Нарисувай "лотарийното" покритие
+        ctx.globalCompositeOperation = 'source-over';
+        ctx.fillStyle = '#C0C0C0'; // Сребрист цвят
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+        
+        // Добави малко текстура (точици)
+        ctx.fillStyle = '#A0A0A0';
+        for(let i=0; i<100; i++) {
+            ctx.fillRect(Math.random()*canvas.width, Math.random()*canvas.height, 2, 2);
+        }
+
+        // Добави надпис върху покритието
+        ctx.font = 'bold 18px Arial';
+        ctx.fillStyle = '#666';
+        ctx.textAlign = 'center';
+        ctx.fillText('ИЗТЪРКАЙ ТУК', canvas.width/2, canvas.height/2 + 7);
+    }
+
+    function scratch(e) {
+        if (!isDrawing) return;
+        
+        const rect = canvas.getBoundingClientRect();
+        const x = (e.clientX || e.touches[0].clientX) - rect.left;
+        const y = (e.clientY || e.touches[0].clientY) - rect.top;
+
+        ctx.globalCompositeOperation = 'destination-out';
+        ctx.beginPath();
+        ctx.arc(x, y, 20, 0, Math.PI * 2);
+        ctx.fill();
+    }
+
+    canvas.addEventListener('mousedown', () => isDrawing = true);
+    canvas.addEventListener('touchstart', () => isDrawing = true);
+    window.addEventListener('mouseup', () => isDrawing = false);
+    window.addEventListener('touchend', () => isDrawing = false);
+    canvas.addEventListener('mousemove', scratch);
+    canvas.addEventListener('touchmove', scratch);
+
+    // Стартирай първоначално
+    initScratch();
+</script>
+
+</body>
+</html>
