@@ -3,115 +3,58 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>V&M Vending - Луксозен Късмет</title>
+    <title>V&M Vending - Луксозен Тест</title>
     <link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@700&family=Montserrat:wght@400;600&family=Playfair+Display:ital,wght@1,600&display=swap" rel="stylesheet">
     <style>
         body {
             margin: 0; padding: 0;
             display: flex; justify-content: center; align-items: center;
             min-height: 100vh;
-            /* Тъмно сив луксозен градиент */
             background: radial-gradient(circle, #2c2c2c 0%, #121212 100%);
             font-family: 'Montserrat', sans-serif;
             color: #e0e0e0; text-align: center;
         }
         .container {
-            /* Ефект на матово стъкло върху тъмна основа */
             background: rgba(30, 30, 30, 0.8);
             backdrop-filter: blur(15px);
             padding: 30px 20px;
             border-radius: 35px;
             width: 88%; max-width: 360px;
-            /* Златиста фина рамка */
             border: 1px solid rgba(212, 175, 55, 0.3);
-            /* Дълбока сянка със златист нюанс */
-            box-shadow: 0 20px 60px rgba(0,0,0,0.8), 0 0 20px rgba(212, 175, 55, 0.05);
+            box-shadow: 0 20px 60px rgba(0,0,0,0.8);
             position: relative;
-            margin: 20px 0;
         }
-        .brand-header {
-            font-family: 'Comfortaa', cursive;
-            font-size: 0.75rem; letter-spacing: 5px;
-            /* Златист цвят за бранда */
-            color: #D4AF37; margin-bottom: 8px;
-            text-transform: uppercase;
-            text-shadow: 0 2px 4px rgba(0,0,0,0.3);
-        }
-        h1 { 
-            font-family: 'Playfair Display', serif; 
-            font-style: italic; 
-            font-size: 1.5rem; 
-            margin-bottom: 25px; 
-            /* Златист градиент за заглавието */
-            background: linear-gradient(to right, #BF953F, #FCF6BA, #B38728, #FBF5B7, #AA771C);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            text-shadow: 0 10px 20px rgba(0,0,0,0.2);
-        }
+        .brand-header { font-family: 'Comfortaa', cursive; font-size: 0.75rem; letter-spacing: 5px; color: #D4AF37; margin-bottom: 8px; text-transform: uppercase; }
+        h1 { font-family: 'Playfair Display', serif; font-style: italic; font-size: 1.5rem; margin-bottom: 25px; color: #D4AF37; }
         
         #scratch-container {
             position: relative; width: 280px; height: 180px;
             margin: 0 auto; border-radius: 20px; overflow: hidden;
-            box-shadow: 0 15px 35px rgba(0,0,0,0.6);
             background-image: url('https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?auto=format&fit=crop&w=400&q=80');
             background-size: cover; background-position: center;
-            border: 1px solid rgba(212, 175, 55, 0.2);
         }
         #fortune-overlay {
             position: absolute; width: 100%; height: 100%;
-            /* По-тъмен и луксозен фон под скреч слоя */
             background: rgba(20, 20, 20, 0.95);
             display: flex; flex-direction: column; align-items: center; justify-content: center;
         }
-        #fortune-text { 
-            color: #D4AF37; /* Златист текст за самия късмет */
-            font-weight: 600; font-size: 1.1rem; 
-            padding: 0 25px; line-height: 1.5; 
-        }
+        #fortune-text { color: #D4AF37; font-weight: 600; font-size: 1.1rem; padding: 0 25px; }
         canvas { position: absolute; top: 0; left: 0; z-index: 2; touch-action: none; cursor: crosshair; }
 
-        .loyalty-info { 
-            margin-top: 20px; font-size: 0.75rem; 
-            color: #D4AF37; 
-            background: rgba(212, 175, 55, 0.1); 
-            padding: 12px; border-radius: 15px;
-            border: 1px solid rgba(212, 175, 55, 0.2);
-        }
-        .photo-spot { 
-            border: 1px solid rgba(212, 175, 55, 0.4); 
-            background: rgba(255,255,255,0.03);
-            border-radius: 50%; width: 55px; height: 55px; 
-            margin: 20px auto 10px; display: flex; 
-            align-items: center; justify-content: center; font-size: 1.4rem; 
-        }
-
-        .share-section { margin-top: 25px; display: none; animation: fadeIn 1s forwards; }
-        .share-buttons { display: flex; justify-content: center; gap: 15px; margin-top: 15px; }
+        .share-section { margin-top: 25px; display: none; }
         .share-btn { 
-            width: 42px; height: 42px; border-radius: 10px; 
-            display: flex; align-items: center; justify-content: center; 
-            text-decoration: none; font-size: 1rem; color: #121212;
-            background: linear-gradient(45deg, #D4AF37, #FBF5B7);
-            box-shadow: 0 4px 15px rgba(0,0,0,0.4);
-            font-weight: bold;
+            display: inline-block; padding: 10px 20px; border-radius: 10px; 
+            text-decoration: none; font-size: 0.8rem; color: #121212;
+            background: linear-gradient(45deg, #D4AF37, #FBF5B7); font-weight: bold; margin: 5px;
         }
 
-        .report-btn { 
-            display: inline-block; margin-top: 25px; 
-            color: #888; font-size: 0.7rem; 
-            text-decoration: none; border-bottom: 1px solid #444;
-            padding-bottom: 2px;
-        }
+        /* ТЕСТОВИ БУТОНИ - Можеш да ги премахнеш по-късно */
+        .test-controls { margin-top: 20px; border-top: 1px dashed #444; padding-top: 15px; }
+        .btn-test { background: none; border: 1px solid #D4AF37; color: #D4AF37; padding: 5px 10px; border-radius: 5px; font-size: 0.7rem; cursor: pointer; margin: 5px; }
 
-        .music-control { 
-            position: absolute; top: 20px; right: 20px; 
-            background: rgba(212, 175, 55, 0.1); 
-            border: 1px solid #D4AF37; color: #D4AF37; 
-            border-radius: 50%; width: 32px; height: 32px; 
-            cursor: pointer; z-index: 10; font-size: 0.8rem;
-        }
+        .report-btn { display: inline-block; margin-top: 25px; color: #888; font-size: 0.7rem; text-decoration: none; }
+        .music-control { position: absolute; top: 20px; right: 20px; background: none; border: 1px solid #D4AF37; color: #D4AF37; border-radius: 50%; width: 32px; height: 32px; cursor: pointer; }
         #limit-message { display: none; padding: 40px 10px; }
-        #limit-message h2 { color: #D4AF37; font-family: 'Playfair Display', serif; }
     </style>
 </head>
 <body>
@@ -133,27 +76,23 @@
             <canvas id="scratch-canvas" width="280" height="180"></canvas>
         </div>
 
-        <div class="photo-spot">📸</div>
-        <div style="font-size: 0.65rem; color: #888; letter-spacing: 1px;">СНИМАЙ ТВОЯ МОМЕНТ</div>
-
         <div class="share-section" id="shareSection">
-            <div class="share-buttons">
-                <a href="#" id="fbShare" target="_blank" class="share-btn">FACEBOOK</a>
-                <a href="#" id="vbShare" target="_blank" class="share-btn">VIBER</a>
-            </div>
-            <div class="loyalty-info">
-                🏆 <strong>PREMIUM БОНУС:</strong> Събери 10 различни късмета и получи комплимент от нас!
-            </div>
+            <a href="#" id="fbShare" target="_blank" class="share-btn">FACEBOOK</a>
+            <a href="#" id="vbShare" target="_blank" class="share-btn">VIBER</a>
+        </div>
+
+        <div class="test-controls">
+            <button class="btn-test" onclick="resetTest()">🔄 ИЗЧИСТИ ПАМЕТТА (ЗА ТЕСТ)</button>
+            <button class="btn-test" onclick="initScratch()">🆕 СЛЕДВАЩ КЪСМЕТ</button>
         </div>
     </div>
 
     <div id="limit-message">
-        <h2>Един късмет на ден 😊</h2>
-        <p style="color: #888;">Луксозните преживявания изискват търпение. Очакваме те утре!</p>
+        <h2 style="color:#D4AF37">Един късмет на ден 😊</h2>
+        <button class="btn-test" onclick="resetTest()">ОТКЛЮЧИ ЗА ТЕСТ</button>
     </div>
     
     <a href="viber://add?number=359896746996" class="report-btn">КОНТАКТ С ПОДДРЪЖКА</a>
-    <div style="margin-top: 20px; font-size: 0.65rem; color: #444; letter-spacing: 2px;">V&M VENDING | EXCLUSIVE SERVICE</div>
 </div>
 
 <script>
@@ -163,11 +102,9 @@
         "Кафето е прегръдка в чаша. Наслади му се!",
         "Днес ще получиш новина, която ще те вдъхнови.",
         "Успехът избира тези, които не спират да опитват!",
-        "Щастието се крие в детайлите – усети ги сега.",
-        "Ти заслужаваш най-доброто, което денят може да предложи!",
-        "Всяка глътка е ново вдъхновение. Продължавай!",
+        "Щастието се крие в малките моменти – като този.",
         "Късметът днес е твоят верен спътник.",
-        "Предстои ти среща, която ще отвори нови врати."
+        "Ти заслужаваш най-доброто днес!"
     ];
 
     const canvas = document.getElementById('scratch-canvas');
@@ -176,6 +113,11 @@
     const musicBtn = document.getElementById('musicBtn');
     let isDrawing = false;
     let scratchedAmount = 0;
+
+    function resetTest() {
+        localStorage.removeItem('last_vending_scratch');
+        location.reload();
+    }
 
     function toggleMusic() {
         if (music.paused) { music.play(); musicBtn.innerText = "🔊"; }
@@ -195,28 +137,21 @@
 
     function initScratch() {
         if (checkLimit()) return;
+        
+        // Ресет на състоянието
+        scratchedAmount = 0;
+        document.getElementById('shareSection').style.display = 'none';
+        
         const textElem = document.getElementById('fortune-text');
-        const randomFortune = fortunes[Math.floor(Math.random() * fortunes.length)];
-        textElem.innerText = randomFortune;
+        textElem.innerText = fortunes[Math.floor(Math.random() * fortunes.length)];
 
-        const pageUrl = window.location.href;
-        const shareText = `Моят късмет от V&M Vending за днес: "${randomFortune}" ☕ Виж своя тук: `;
-        document.getElementById('fbShare').href = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(pageUrl)}`;
-        document.getElementById('vbShare').href = `viber://forward?text=${encodeURIComponent(shareText + pageUrl)}`;
-
-        // Тъмно сив луксозен слой за изтъркване
+        // Нарисувай сивия слой отново
+        ctx.globalCompositeOperation = 'source-over';
         const gradient = ctx.createLinearGradient(0, 0, canvas.width, canvas.height);
-        gradient.addColorStop(0, '#434343');
-        gradient.addColorStop(1, '#000000');
+        gradient.addColorStop(0, '#434343'); gradient.addColorStop(1, '#000000');
         ctx.fillStyle = gradient;
         ctx.fillRect(0, 0, canvas.width, canvas.height);
         
-        // Златисти пръски върху сивия слой
-        for(let i=0; i<30; i++) {
-            ctx.fillStyle = 'rgba(212, 175, 55, 0.3)';
-            ctx.fillRect(Math.random()*canvas.width, Math.random()*canvas.height, 2, 2);
-        }
-
         ctx.font = 'bold 15px Montserrat'; ctx.fillStyle = '#D4AF37'; ctx.textAlign = 'center';
         ctx.fillText('ИЗТЪРКАЙ ТУК ☕', canvas.width/2, canvas.height/2 + 7);
     }
@@ -226,14 +161,15 @@
         const rect = canvas.getBoundingClientRect();
         const x = (e.clientX || (e.touches && e.touches[0].clientX)) - rect.left;
         const y = (e.clientY || (e.touches && e.touches[0].clientY)) - rect.top;
+        
         ctx.globalCompositeOperation = 'destination-out';
         ctx.beginPath(); ctx.arc(x, y, 24, 0, Math.PI * 2); ctx.fill();
 
         scratchedAmount++;
-        if (scratchedAmount > 25) {
+        if (scratchedAmount > 30) {
             document.getElementById('shareSection').style.display = 'block';
-            localStorage.setItem('last_vending_scratch', new Date().toDateString());
-            if (music.paused && scratchedAmount < 35) { toggleMusic(); }
+            // В РЕАЛНИ УСЛОВИЯ ТУК СЕ ЗАПИСВА ДАТАТА:
+            // localStorage.setItem('last_vending_scratch', new Date().toDateString());
         }
     }
 
