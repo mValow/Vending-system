@@ -10,7 +10,6 @@
             margin: 0; padding: 0;
             display: flex; justify-content: center; align-items: center;
             min-height: 100vh;
-            /* Топъл градиент в цветовете на печено кафе и карамел */
             background: radial-gradient(circle, #4e342e 0%, #21120d 100%);
             font-family: 'Montserrat', sans-serif;
             color: #f3e5f5; text-align: center;
@@ -23,7 +22,7 @@
             border-radius: 40px;
             width: 88%; max-width: 360px;
             border: 1px solid rgba(255, 211, 154, 0.2);
-            box-shadow: 0 25px 50px rgba(0,0,0,0.6), inset 0 0 20px rgba(255,211,154,0.05);
+            box-shadow: 0 25px 50px rgba(0,0,0,0.6);
         }
         .brand-header {
             font-family: 'Comfortaa', cursive;
@@ -36,24 +35,19 @@
             font-style: italic;
             font-size: 1.6rem; margin-bottom: 25px; 
             color: #FFD39A;
-            text-shadow: 0 2px 4px rgba(0,0,0,0.3);
         }
         
-        /* Зоната за изтъркване */
-        #scratch-outer {
-            padding: 10px;
-            background: rgba(255, 211, 154, 0.1);
-            border-radius: 25px;
-            display: inline-block;
-        }
+        #scratch-area { display: block; }
+        #limit-message { display: none; padding: 40px 20px; }
+
         #scratch-container {
             position: relative;
             width: 290px;
             height: 190px;
+            margin: 0 auto;
             border-radius: 20px;
             overflow: hidden;
             box-shadow: 0 10px 25px rgba(0,0,0,0.5);
-            /* Уютна снимка на кафе */
             background-image: url('https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?auto=format&fit=crop&w=400&q=80');
             background-size: cover;
             background-position: center;
@@ -61,62 +55,46 @@
         #fortune-overlay {
             position: absolute;
             width: 100%; height: 100%;
-            background: rgba(255, 252, 242, 0.92); /* Много светло кремаво за уют */
+            background: rgba(255, 252, 242, 0.92);
             display: flex; flex-direction: column; align-items: center; justify-content: center;
         }
-        .mini-logo { font-size: 1.5rem; margin-bottom: 10px; opacity: 0.8; }
         #fortune-text {
             color: #3e2723; font-weight: 600; font-size: 1.15rem;
             padding: 0 25px; box-sizing: border-box;
-            user-select: none; line-height: 1.5;
-            font-family: 'Montserrat', sans-serif;
+            line-height: 1.5;
         }
         canvas {
             position: absolute;
             top: 0; left: 0;
-            cursor: pointer;
-            touch-action: none;
             z-index: 2;
+            touch-action: none;
         }
-        .btn-reset {
-            margin-top: 30px;
-            background: linear-gradient(to bottom, #FFD39A, #e6b980);
-            border: none;
-            color: #3e2723; padding: 14px 30px;
-            border-radius: 30px; cursor: pointer; 
-            font-weight: 700; font-size: 0.85rem;
-            text-transform: uppercase; letter-spacing: 1px;
-            box-shadow: 0 6px 20px rgba(255,211,154,0.3);
-            transition: 0.3s;
-        }
-        .btn-reset:active { transform: scale(0.96); }
-        
         .footer-brand {
             margin-top: 25px;
             font-size: 0.75rem;
             color: #8d6e63;
-            letter-spacing: 1px;
         }
-        .footer-brand strong { color: #bcaaa4; }
     </style>
 </head>
 <body>
 
 <div class="container">
     <div class="brand-header">V&M Vending</div>
-    <h1>Твоят топъл момент...</h1>
     
-    <div id="scratch-outer">
+    <div id="scratch-area">
+        <h1>Твоят топъл момент...</h1>
         <div id="scratch-container">
             <div id="fortune-overlay">
-                <div class="mini-logo">☕</div>
                 <div id="fortune-text"></div>
             </div>
             <canvas id="scratch-canvas" width="290" height="190"></canvas>
         </div>
     </div>
 
-    <button class="btn-reset" onclick="initScratch()">Нов късмет</button>
+    <div id="limit-message">
+        <h2 style="color: #FFD39A;">Вече взе своя късмет за днес!</h2>
+        <p style="font-size: 1.2rem;">Опитай пак утре! 😊</p>
+    </div>
     
     <div class="footer-brand">
         С любов от <strong>V&M VENDING</strong>
@@ -129,12 +107,10 @@
         "Усмихни се! Нещо хубаво те чака зад ъгъла.",
         "Кафето е прегръдка в чаша. Наслади му се!",
         "Днес е идеалният ден за ново начало.",
-        "Твоята енергия е заразителна – разпръсквай я!",
         "Очаквай неочаквана среща с интересен човек.",
         "Щастието се крие в малките моменти – като този.",
         "Ти заслужаваш всичкото щастие на света!",
         "Всяко кафе е нов шанс да започнеш отначало.",
-        "Наслади се на това кафе – заслужаваш го!",
         "V&M Vending ти пожелава най-успешния ден досега!"
     ];
 
@@ -142,13 +118,24 @@
     const ctx = canvas.getContext('2d');
     let isDrawing = false;
 
+    function checkLimit() {
+        const lastDate = localStorage.getItem('last_scratch_date');
+        const today = new Date().toDateString();
+
+        if (lastDate === today) {
+            document.getElementById('scratch-area').style.display = 'none';
+            document.getElementById('limit-message').style.display = 'block';
+            return true;
+        }
+        return false;
+    }
+
     function initScratch() {
+        if (checkLimit()) return;
+
         const textElem = document.getElementById('fortune-text');
         textElem.innerText = fortunes[Math.floor(Math.random() * fortunes.length)];
 
-        ctx.globalCompositeOperation = 'source-over';
-        
-        // По-уютно златисто-бронзово покритие
         const gradient = ctx.createLinearGradient(0, 0, canvas.width, canvas.height);
         gradient.addColorStop(0, '#8d6e63');
         gradient.addColorStop(0.5, '#bcaaa4');
@@ -157,12 +144,6 @@
         ctx.fillStyle = gradient;
         ctx.fillRect(0, 0, canvas.width, canvas.height);
         
-        // Малко фин "златен прах"
-        for (let i = 0; i < 400; i++) {
-            ctx.fillStyle = 'rgba(255,211,154,0.2)';
-            ctx.fillRect(Math.random() * canvas.width, Math.random() * canvas.height, 1, 1);
-        }
-
         ctx.font = 'bold 18px Montserrat';
         ctx.fillStyle = '#ffffff';
         ctx.textAlign = 'center';
@@ -180,6 +161,10 @@
         ctx.beginPath();
         ctx.arc(x, y, 22, 0, Math.PI * 2);
         ctx.fill();
+
+        // Записваме, че потребителят е изтъркал късмета си за днес
+        const today = new Date().toDateString();
+        localStorage.setItem('last_scratch_date', today);
     }
 
     canvas.addEventListener('mousedown', () => isDrawing = true);
