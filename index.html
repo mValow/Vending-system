@@ -35,14 +35,22 @@
         .logo { font-size: 3.5rem; margin-bottom: 10px; filter: drop-shadow(0 0 10px #FFD39A); }
         h1 { font-family: 'Comfortaa', cursive; font-size: 1.4rem; margin-bottom: 25px; }
 
+        /* ЕФЕКТ ЗА ДЪЛБОЧИНА НА КЪСМЕТА */
         #fortune-box {
             min-height: 140px; display: flex; align-items: center; justify-content: center;
-            margin-bottom: 20px;
+            margin-bottom: 25px;
+            background: rgba(0, 0, 0, 0.3); /* Тъмен фон */
+            border-radius: 20px;
+            padding: 15px;
+            /* Вътрешна сянка за ефект на вдлъбнатина */
+            box-shadow: inset 0 5px 15px rgba(0,0,0,0.6), 0 1px 1px rgba(255,255,255,0.1);
+            border: 1px solid rgba(255,255,255,0.05);
         }
 
         #fortune-text {
-            font-size: 1.3rem; line-height: 1.6; font-weight: bold;
-            color: #FFD39A; text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+            font-size: 1.2rem; line-height: 1.5; font-weight: bold;
+            color: #FFD39A; text-shadow: 0 2px 4px rgba(0,0,0,0.5);
+            transition: opacity 0.5s ease;
         }
 
         .btn {
@@ -52,6 +60,7 @@
             transition: 0.3s; box-shadow: 0 4px 15px rgba(0,0,0,0.3);
             font-size: 0.9rem; margin-bottom: 10px;
         }
+        .btn:active { transform: scale(0.95); background-color: #e6be8a; }
 
         .share-area { display: none; margin-top: 10px; }
 
@@ -71,8 +80,8 @@
 
         .message-next {
             font-size: 0.8rem; margin-top: 15px; color: #fff;
-            background: rgba(0,0,0,0.2); padding: 10px; border-radius: 10px;
-            opacity: 0.8;
+            background: rgba(0,0,0,0.4); padding: 12px; border-radius: 12px;
+            opacity: 0.9; border: 1px dashed rgba(255,255,255,0.2);
         }
 
         .footer-text { font-size: 0.75rem; margin-top: 30px; opacity: 0.5; }
@@ -80,22 +89,26 @@
 </head>
 <body>
 
+<audio id="scratch-sound" preload="auto">
+    <source src="https://www.soundjay.com/buttons/beep-29.mp3" type="audio/mpeg">
+</audio>
+
 <div class="container">
     <div class="brand-name">V&M Vending</div>
     <div class="logo">☕</div>
     <h1>Твоят кафе-късмет</h1>
     
     <div id="fortune-box">
-        <div id="fortune-text">Натисни бутона, за да откриеш своя късмет...</div>
+        <div id="fortune-text">Изтъркай своя късмет...</div>
     </div>
     
-    <button id="draw-btn" class="btn" onclick="drawFortune()">Изтегли късмет за деня</button>
+    <button id="draw-btn" class="btn" onclick="drawFortune()">Изтъркай с монета 🪙</button>
     
     <div id="share-area" class="share-area">
         <button class="btn-fb" onclick="shareOnFacebook()">Сподели във Facebook</button>
         <button class="btn-share" onclick="shareOnSocial()">Още начини за споделяне 📲</button>
         <div id="next-message" class="message-next">
-            Твоят късмет за днес е изтеглен. Ела пак утре!
+            Твоят късмет за днес е изтъркан. Ела пак утре!
         </div>
     </div>
     
@@ -110,21 +123,32 @@
         "Днес ще получиш новина, която ще те зарадва.",
         "Твоята енергия е заразителна – разпръсквай я!",
         "Успехът идва при тези, които не се отказват!",
-        "V&M Vending ти пожелава прекрасен ден!"
-        // Тук постави всички 100 късмета, които ти дадох по-рано
+        "V&M Vending ти пожелава прекрасен ден!",
+        "Очаквай неочакваното днес!",
+        "Всяко кафе е нов шанс за успех."
     ];
 
     function drawFortune() {
+        // Пускане на звука
+        const sound = document.getElementById('scratch-sound');
+        sound.currentTime = 0;
+        sound.play();
+
         const today = new Date().toDateString();
         const randomIndex = Math.floor(Math.random() * fortunes.length);
         const selectedFortune = fortunes[randomIndex];
 
-        document.getElementById('fortune-text').innerText = selectedFortune;
-
-        localStorage.setItem('lastFortuneDate', today);
-        localStorage.setItem('savedFortune', selectedFortune);
-
-        updateUI();
+        // Малка пауза, за да се усети "триенето"
+        document.getElementById('fortune-text').style.opacity = '0';
+        
+        setTimeout(() => {
+            document.getElementById('fortune-text').innerText = selectedFortune;
+            document.getElementById('fortune-text').style.opacity = '1';
+            
+            localStorage.setItem('lastFortuneDate', today);
+            localStorage.setItem('savedFortune', selectedFortune);
+            updateUI();
+        }, 500);
     }
 
     function shareOnFacebook() {
@@ -140,7 +164,6 @@
             text: `Моят късмет от кафето днес е: "${fortune}" ☕✨`,
             url: window.location.href
         };
-
         if (navigator.share) {
             navigator.share(shareData);
         } else {
