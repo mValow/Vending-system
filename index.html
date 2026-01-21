@@ -3,67 +3,115 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>V&M Vending - Твоят Късмет</title>
+    <title>V&M Vending - Луксозен Късмет</title>
     <link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@700&family=Montserrat:wght@400;600&family=Playfair+Display:ital,wght@1,600&display=swap" rel="stylesheet">
     <style>
         body {
             margin: 0; padding: 0;
             display: flex; justify-content: center; align-items: center;
             min-height: 100vh;
-            background: radial-gradient(circle, #4e342e 0%, #21120d 100%);
+            /* Тъмно сив луксозен градиент */
+            background: radial-gradient(circle, #2c2c2c 0%, #121212 100%);
             font-family: 'Montserrat', sans-serif;
-            color: #f3e5f5; text-align: center;
+            color: #e0e0e0; text-align: center;
         }
         .container {
-            background: rgba(43, 24, 16, 0.6);
-            backdrop-filter: blur(12px);
-            padding: 25px 15px;
-            border-radius: 40px;
-            width: 90%; max-width: 360px;
-            border: 1px solid rgba(255, 211, 154, 0.2);
-            box-shadow: 0 25px 50px rgba(0,0,0,0.6);
+            /* Ефект на матово стъкло върху тъмна основа */
+            background: rgba(30, 30, 30, 0.8);
+            backdrop-filter: blur(15px);
+            padding: 30px 20px;
+            border-radius: 35px;
+            width: 88%; max-width: 360px;
+            /* Златиста фина рамка */
+            border: 1px solid rgba(212, 175, 55, 0.3);
+            /* Дълбока сянка със златист нюанс */
+            box-shadow: 0 20px 60px rgba(0,0,0,0.8), 0 0 20px rgba(212, 175, 55, 0.05);
             position: relative;
             margin: 20px 0;
         }
         .brand-header {
             font-family: 'Comfortaa', cursive;
-            font-size: 0.8rem; letter-spacing: 3px;
-            color: #d7ccc8; margin-bottom: 5px;
+            font-size: 0.75rem; letter-spacing: 5px;
+            /* Златист цвят за бранда */
+            color: #D4AF37; margin-bottom: 8px;
             text-transform: uppercase;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.3);
         }
-        h1 { font-family: 'Playfair Display', serif; font-style: italic; font-size: 1.4rem; margin-bottom: 20px; color: #FFD39A; }
+        h1 { 
+            font-family: 'Playfair Display', serif; 
+            font-style: italic; 
+            font-size: 1.5rem; 
+            margin-bottom: 25px; 
+            /* Златист градиент за заглавието */
+            background: linear-gradient(to right, #BF953F, #FCF6BA, #B38728, #FBF5B7, #AA771C);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0 10px 20px rgba(0,0,0,0.2);
+        }
         
         #scratch-container {
             position: relative; width: 280px; height: 180px;
             margin: 0 auto; border-radius: 20px; overflow: hidden;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+            box-shadow: 0 15px 35px rgba(0,0,0,0.6);
             background-image: url('https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?auto=format&fit=crop&w=400&q=80');
             background-size: cover; background-position: center;
+            border: 1px solid rgba(212, 175, 55, 0.2);
         }
         #fortune-overlay {
             position: absolute; width: 100%; height: 100%;
-            background: rgba(255, 252, 242, 0.92);
+            /* По-тъмен и луксозен фон под скреч слоя */
+            background: rgba(20, 20, 20, 0.95);
             display: flex; flex-direction: column; align-items: center; justify-content: center;
         }
-        #fortune-text { color: #3e2723; font-weight: 600; font-size: 1.1rem; padding: 0 20px; line-height: 1.4; }
-        canvas { position: absolute; top: 0; left: 0; z-index: 2; touch-action: none; }
+        #fortune-text { 
+            color: #D4AF37; /* Златист текст за самия късмет */
+            font-weight: 600; font-size: 1.1rem; 
+            padding: 0 25px; line-height: 1.5; 
+        }
+        canvas { position: absolute; top: 0; left: 0; z-index: 2; touch-action: none; cursor: crosshair; }
 
-        /* Лоялност и снимка */
-        .loyalty-info { margin-top: 20px; font-size: 0.75rem; color: #FFD39A; background: rgba(255,255,255,0.05); padding: 10px; border-radius: 15px; }
-        .photo-spot { border: 2px dashed rgba(255,211,154,0.3); border-radius: 50%; width: 60px; height: 60px; margin: 15px auto; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; }
+        .loyalty-info { 
+            margin-top: 20px; font-size: 0.75rem; 
+            color: #D4AF37; 
+            background: rgba(212, 175, 55, 0.1); 
+            padding: 12px; border-radius: 15px;
+            border: 1px solid rgba(212, 175, 55, 0.2);
+        }
+        .photo-spot { 
+            border: 1px solid rgba(212, 175, 55, 0.4); 
+            background: rgba(255,255,255,0.03);
+            border-radius: 50%; width: 55px; height: 55px; 
+            margin: 20px auto 10px; display: flex; 
+            align-items: center; justify-content: center; font-size: 1.4rem; 
+        }
 
-        /* Споделяне */
-        .share-section { margin-top: 20px; display: none; animation: fadeIn 1s forwards; }
-        .share-buttons { display: flex; justify-content: center; gap: 12px; margin-top: 10px; }
-        .share-btn { width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; text-decoration: none; font-size: 1.1rem; box-shadow: 0 4px 10px rgba(0,0,0,0.3); }
-        .fb { background: #1877F2; color: white; }
-        .vb { background: #7360f2; color: white; }
+        .share-section { margin-top: 25px; display: none; animation: fadeIn 1s forwards; }
+        .share-buttons { display: flex; justify-content: center; gap: 15px; margin-top: 15px; }
+        .share-btn { 
+            width: 42px; height: 42px; border-radius: 10px; 
+            display: flex; align-items: center; justify-content: center; 
+            text-decoration: none; font-size: 1rem; color: #121212;
+            background: linear-gradient(45deg, #D4AF37, #FBF5B7);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.4);
+            font-weight: bold;
+        }
 
-        /* Помощ / Проблем */
-        .report-btn { display: inline-block; margin-top: 20px; color: #bcaaa4; font-size: 0.7rem; text-decoration: underline; cursor: pointer; }
+        .report-btn { 
+            display: inline-block; margin-top: 25px; 
+            color: #888; font-size: 0.7rem; 
+            text-decoration: none; border-bottom: 1px solid #444;
+            padding-bottom: 2px;
+        }
 
-        .music-control { position: absolute; top: 15px; right: 15px; background: rgba(255, 211, 154, 0.1); border: 1px solid rgba(255, 211, 154, 0.3); color: #FFD39A; border-radius: 50%; width: 30px; height: 30px; cursor: pointer; z-index: 10; font-size: 0.8rem; }
-        #limit-message { display: none; padding: 30px 10px; }
+        .music-control { 
+            position: absolute; top: 20px; right: 20px; 
+            background: rgba(212, 175, 55, 0.1); 
+            border: 1px solid #D4AF37; color: #D4AF37; 
+            border-radius: 50%; width: 32px; height: 32px; 
+            cursor: pointer; z-index: 10; font-size: 0.8rem;
+        }
+        #limit-message { display: none; padding: 40px 10px; }
+        #limit-message h2 { color: #D4AF37; font-family: 'Playfair Display', serif; }
     </style>
 </head>
 <body>
@@ -85,41 +133,41 @@
             <canvas id="scratch-canvas" width="280" height="180"></canvas>
         </div>
 
-        <div class="photo-spot" title="Сложи чашата тук за снимка">📸</div>
-        <div style="font-size: 0.65rem; opacity: 0.7;">Сложи чашата пред екрана за идеалното стори!</div>
+        <div class="photo-spot">📸</div>
+        <div style="font-size: 0.65rem; color: #888; letter-spacing: 1px;">СНИМАЙ ТВОЯ МОМЕНТ</div>
 
         <div class="share-section" id="shareSection">
             <div class="share-buttons">
-                <a href="#" id="fbShare" target="_blank" class="share-btn fb">f</a>
-                <a href="#" id="vbShare" target="_blank" class="share-btn vb">📞</a>
+                <a href="#" id="fbShare" target="_blank" class="share-btn">FACEBOOK</a>
+                <a href="#" id="vbShare" target="_blank" class="share-btn">VIBER</a>
             </div>
             <div class="loyalty-info">
-                🎁 <strong>БОНУС:</strong> Събери 10 снимки на различни късмети и вземи <strong>БЕЗПЛАТНО</strong> кафе!
+                🏆 <strong>PREMIUM БОНУС:</strong> Събери 10 различни късмета и получи комплимент от нас!
             </div>
         </div>
     </div>
 
     <div id="limit-message">
-        <h2 style="color: #FFD39A;">Един късмет на ден е достатъчен! 😊</h2>
-        <p>Твоето кафе те очаква. Опитай пак утре!</p>
+        <h2>Един късмет на ден 😊</h2>
+        <p style="color: #888;">Луксозните преживявания изискват търпение. Очакваме те утре!</p>
     </div>
     
-  <a href="viber://add?number=359896746996" class="report-btn">Проблем с машината? Пиши ни тук.</a>
-    <div style="margin-top: 15px; font-size: 0.7rem; color: #8d6e63;">С любов от <strong>V&M VENDING</strong></div>
+    <a href="viber://add?number=359896746996" class="report-btn">КОНТАКТ С ПОДДРЪЖКА</a>
+    <div style="margin-top: 20px; font-size: 0.65rem; color: #444; letter-spacing: 2px;">V&M VENDING | EXCLUSIVE SERVICE</div>
 </div>
 
 <script>
     const fortunes = [
         "Днешният ден ще бъде толкова силен, колкото е твоето кафе!",
-        "Усмихни се! Нещо хубаво те чака зад ъгъла.",
+        "Усмихни се! Нещо специално те чака днес.",
         "Кафето е прегръдка в чаша. Наслади му се!",
-        "Днес ще получиш новина, която ще те зарадва.",
-        "Успехът идва при тези, които не се отказват!",
-        "Щастието се крие в малките моменти – като този.",
-        "Ти заслужаваш всичкото щастие на света!",
-        "Всяко кафе е нов шанс да започнеш отначало.",
-        "Късметът днес е на твоя страна!",
-        "Предстои ти среща, която ще те усмихне."
+        "Днес ще получиш новина, която ще те вдъхнови.",
+        "Успехът избира тези, които не спират да опитват!",
+        "Щастието се крие в детайлите – усети ги сега.",
+        "Ти заслужаваш най-доброто, което денят може да предложи!",
+        "Всяка глътка е ново вдъхновение. Продължавай!",
+        "Късметът днес е твоят верен спътник.",
+        "Предстои ти среща, която ще отвори нови врати."
     ];
 
     const canvas = document.getElementById('scratch-canvas');
@@ -156,12 +204,21 @@
         document.getElementById('fbShare').href = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(pageUrl)}`;
         document.getElementById('vbShare').href = `viber://forward?text=${encodeURIComponent(shareText + pageUrl)}`;
 
+        // Тъмно сив луксозен слой за изтъркване
         const gradient = ctx.createLinearGradient(0, 0, canvas.width, canvas.height);
-        gradient.addColorStop(0, '#8d6e63'); gradient.addColorStop(0.5, '#bcaaa4'); gradient.addColorStop(1, '#5d4037');
+        gradient.addColorStop(0, '#434343');
+        gradient.addColorStop(1, '#000000');
         ctx.fillStyle = gradient;
         ctx.fillRect(0, 0, canvas.width, canvas.height);
-        ctx.font = 'bold 16px Montserrat'; ctx.fillStyle = '#ffffff'; ctx.textAlign = 'center';
-        ctx.fillText('ИЗТЪРКАЙ ТУК ☕ ', canvas.width/2, canvas.height/2 + 7);
+        
+        // Златисти пръски върху сивия слой
+        for(let i=0; i<30; i++) {
+            ctx.fillStyle = 'rgba(212, 175, 55, 0.3)';
+            ctx.fillRect(Math.random()*canvas.width, Math.random()*canvas.height, 2, 2);
+        }
+
+        ctx.font = 'bold 15px Montserrat'; ctx.fillStyle = '#D4AF37'; ctx.textAlign = 'center';
+        ctx.fillText('ИЗТЪРКАЙ ТУК ☕', canvas.width/2, canvas.height/2 + 7);
     }
 
     function scratch(e) {
@@ -170,7 +227,7 @@
         const x = (e.clientX || (e.touches && e.touches[0].clientX)) - rect.left;
         const y = (e.clientY || (e.touches && e.touches[0].clientY)) - rect.top;
         ctx.globalCompositeOperation = 'destination-out';
-        ctx.beginPath(); ctx.arc(x, y, 22, 0, Math.PI * 2); ctx.fill();
+        ctx.beginPath(); ctx.arc(x, y, 24, 0, Math.PI * 2); ctx.fill();
 
         scratchedAmount++;
         if (scratchedAmount > 25) {
