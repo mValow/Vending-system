@@ -6,6 +6,10 @@
 <title>V&M Vending – Кафе късмет</title>
 
 <style>
+* {
+  box-sizing: border-box;
+}
+
 body {
   margin: 0;
   height: 100vh;
@@ -13,9 +17,10 @@ body {
   justify-content: center;
   align-items: center;
   background: #000;
+  font-family: Arial, sans-serif;
 }
 
-/* POSTER */
+/* MAIN POSTER */
 .poster {
   width: 360px;
   height: 740px;
@@ -23,46 +28,33 @@ body {
   position: relative;
 }
 
-/* SCRATCH AREA */
-#scratchContainer {
+/* SCRATCH CLICK ZONE */
+.scratch-zone {
   position: absolute;
   top: 330px;
   left: 40px;
   width: 280px;
   height: 170px;
-  border-radius: 20px;
-  overflow: hidden;
+  cursor: pointer;
 }
 
-/* FORTUNE */
-#fortune {
+/* FORTUNE OVERLAY */
+.fortune {
   position: absolute;
-  inset: 0;
-  background: rgba(20,14,12,0.75);
-  color: #f5d9a6;
-  font-size: 18px;
-  display: flex;
+  top: 330px;
+  left: 40px;
+  width: 280px;
+  height: 170px;
+  display: none;
   justify-content: center;
   align-items: center;
   text-align: center;
   padding: 20px;
-}
-
-/* CAMERA BUTTON */
-.camera-btn {
-  position: absolute;
-  bottom: 165px;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 70px;
-  height: 70px;
-  border-radius: 50%;
-  border: 2px dashed rgba(255,215,150,0.7);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  font-size: 28px;
   color: #f5d9a6;
+  font-size: 18px;
+  background: rgba(20, 14, 12, 0.75);
+  border-radius: 20px;
+  backdrop-filter: blur(6px);
 }
 </style>
 </head>
@@ -71,16 +63,13 @@ body {
 
 <div class="poster">
 
-  <div id="scratchContainer">
-    <div id="fortune"></div>
-    <canvas id="scratch" width="280" height="170"></canvas>
-  </div>
+  <!-- CLICK AREA -->
+  <div class="scratch-zone" onclick="drawFortune()"></div>
 
-  <div class="camera-btn" onclick="openCamera()">📸</div>
+  <!-- RESULT -->
+  <div class="fortune" id="fortune"></div>
 
 </div>
-
-<audio id="scratchSound" src="scratch.mp3"></audio>
 
 <script>
 const fortunes = [
@@ -91,47 +80,11 @@ const fortunes = [
   "Това кафе беше точно навреме 🤎"
 ];
 
-const fortuneEl = document.getElementById("fortune");
-fortuneEl.innerText = fortunes[Math.floor(Math.random() * fortunes.length)];
-
-const canvas = document.getElementById("scratch");
-const ctx = canvas.getContext("2d");
-const sound = document.getElementById("scratchSound");
-
-ctx.fillStyle = "#3a2a23";
-ctx.fillRect(0,0,canvas.width,canvas.height);
-
-ctx.globalCompositeOperation = "destination-out";
-
-let scratching = false;
-
-function scratch(e) {
-  if (!scratching) return;
-  const rect = canvas.getBoundingClientRect();
-  const x = (e.touches ? e.touches[0].clientX : e.clientX) - rect.left;
-  const y = (e.touches ? e.touches[0].clientY : e.clientY) - rect.top;
-
-  ctx.beginPath();
-  ctx.arc(x, y, 18, 0, Math.PI * 2);
-  ctx.fill();
-
-  if (sound.paused) sound.play();
-}
-
-canvas.addEventListener("mousedown", () => scratching = true);
-canvas.addEventListener("mouseup", () => { scratching = false; sound.pause(); });
-canvas.addEventListener("mousemove", scratch);
-
-canvas.addEventListener("touchstart", () => scratching = true);
-canvas.addEventListener("touchend", () => { scratching = false; sound.pause(); });
-canvas.addEventListener("touchmove", scratch);
-
-function openCamera() {
-  const input = document.createElement("input");
-  input.type = "file";
-  input.accept = "image/*";
-  input.capture = "environment";
-  input.click();
+function drawFortune() {
+  const box = document.getElementById("fortune");
+  const random = Math.floor(Math.random() * fortunes.length);
+  box.innerText = fortunes[random];
+  box.style.display = "flex";
 }
 </script>
 
