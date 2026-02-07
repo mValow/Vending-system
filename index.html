@@ -1,91 +1,284 @@
 <!DOCTYPE html>
 <html lang="bg">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>V&M Vending – Кафе късмет</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>V&M Vending - Твоят Късмет</title>
+    <link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@700&family=Montserrat:wght@400;600&family=Playfair+Display:ital,wght@1,600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --gold: #FFD39A;
+            --coffee-dark: #21120d;
+        }
 
-<style>
-* {
-  box-sizing: border-box;
-}
+        body {
+            margin: 0; padding: 0;
+            display: flex; justify-content: center; align-items: center;
+            min-height: 100vh;
+            background: radial-gradient(circle, #4e342e 0%, #1a0f0c 100%);
+            font-family: 'Montserrat', sans-serif;
+            color: #f3e5f5; text-align: center;
+            overflow: hidden;
+        }
 
-body {
-  margin: 0;
-  height: 100vh;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  background: #000;
-  font-family: Arial, sans-serif;
-}
+        /* --- СВЕТЛИННИ ЕФЕКТИ В БЕКГРАУНДА --- */
+        body::before {
+            content: "";
+            position: absolute; width: 100%; height: 100%;
+            background: url('https://www.transparenttextures.com/patterns/stardust.png');
+            opacity: 0.3; pointer-events: none;
+        }
 
-/* MAIN POSTER */
-.poster {
-  width: 360px;
-  height: 740px;
-  background: url("bg.jpg") center/cover no-repeat;
-  position: relative;
-}
+        /* --- АНИМИРАНО ЛОГО ЧАША --- */
+        .coffee-wrapper {
+            margin: 20px auto 10px;
+            position: relative;
+            width: 80px; height: 80px;
+            animation: cupFloat 3s ease-in-out infinite;
+        }
 
-/* SCRATCH CLICK ZONE */
-.scratch-zone {
-  position: absolute;
-  top: 330px;
-  left: 40px;
-  width: 280px;
-  height: 170px;
-  cursor: pointer;
-}
+        @keyframes cupFloat {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-5px); }
+        }
 
-/* FORTUNE OVERLAY */
-.fortune {
-  position: absolute;
-  top: 330px;
-  left: 40px;
-  width: 280px;
-  height: 170px;
-  display: none;
-  justify-content: center;
-  align-items: center;
-  text-align: center;
-  padding: 20px;
-  color: #f5d9a6;
-  font-size: 18px;
-  background: rgba(20, 14, 12, 0.75);
-  border-radius: 20px;
-  backdrop-filter: blur(6px);
-}
-</style>
+        .coffee-logo {
+            position: absolute; bottom: 10px; left: 15px;
+            width: 50px; height: 35px;
+            background: var(--gold);
+            border-bottom-left-radius: 20px;
+            border-bottom-right-radius: 20px;
+            box-shadow: 0 0 15px rgba(255, 211, 154, 0.4);
+        }
+
+        .coffee-logo::after {
+            content: '';
+            position: absolute; top: 5px; right: -12px;
+            width: 12px; height: 18px;
+            border: 4px solid var(--gold);
+            border-radius: 50%;
+        }
+
+        .steam-container {
+            position: absolute; top: 0px; left: 25px;
+            display: flex; gap: 8px;
+        }
+
+        .steam {
+            width: 4px; height: 25px;
+            background: linear-gradient(to top, rgba(255,255,255,0.8), transparent);
+            border-radius: 10px;
+            filter: blur(1px);
+            animation: steamRise 2s infinite ease-out;
+            opacity: 0;
+        }
+
+        .steam:nth-child(2) { animation-delay: 0.4s; left: 15px; }
+        .steam:nth-child(3) { animation-delay: 0.8s; left: 30px; }
+
+        @keyframes steamRise {
+            0% { transform: translateY(0) scaleX(1); opacity: 0; }
+            30% { opacity: 0.6; }
+            100% { transform: translateY(-40px) scaleX(2); opacity: 0; }
+        }
+
+        .container {
+            background: rgba(43, 24, 16, 0.75);
+            backdrop-filter: blur(15px);
+            padding: 30px 20px;
+            border-radius: 40px;
+            width: 90%; max-width: 360px;
+            border: 1px solid rgba(255, 211, 154, 0.3);
+            box-shadow: 0 0 40px rgba(0,0,0,0.8), inset 0 0 20px rgba(255,211,154,0.05);
+            z-index: 5;
+        }
+
+        h1 { font-family: 'Playfair Display', serif; font-style: italic; font-size: 1.5rem; color: var(--gold); text-shadow: 0 0 10px rgba(255,211,154,0.3); }
+
+        /* --- КЪСМЕТЧЕ С ВОДЕН ЗНАК --- */
+        #scratch-container {
+            position: relative; width: 280px; height: 180px;
+            margin: 0 auto; border-radius: 20px; overflow: hidden;
+            background: #fffcf2;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        }
+
+        #fortune-overlay {
+            position: absolute; width: 100%; height: 100%;
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            z-index: 1;
+        }
+
+        /* Воден знак под късмета */
+        .watermark {
+            position: absolute;
+            font-size: 2.5rem;
+            font-weight: 900;
+            color: rgba(62, 39, 35, 0.05);
+            transform: rotate(-15deg);
+            white-space: nowrap;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        #fortune-text { 
+            color: #3e2723; font-weight: 600; font-size: 1.15rem; 
+            padding: 0 25px; line-height: 1.4; position: relative; z-index: 2;
+        }
+
+        canvas { position: absolute; top: 0; left: 0; z-index: 3; touch-action: none; cursor: crosshair; }
+
+        /* --- БУТОНИ И ЕЛЕМЕНТИ --- */
+        .test-btn {
+            background: linear-gradient(135deg, rgba(255,211,154,0.2), rgba(255,211,154,0.1));
+            border: 1px solid var(--gold); color: var(--gold);
+            padding: 10px 20px; border-radius: 25px;
+            font-size: 0.8rem; cursor: pointer; transition: 0.3s; margin-top: 15px;
+        }
+        .test-btn:hover { background: var(--gold); color: var(--coffee-dark); }
+
+        .report-btn { display: inline-block; margin-top: 25px; color: #bcaaa4; font-size: 0.75rem; text-decoration: none; opacity: 0.8; }
+        
+        .music-control { 
+            position: absolute; top: 20px; right: 20px; 
+            background: rgba(255, 211, 154, 0.1); border: 1px solid var(--gold);
+            color: var(--gold); border-radius: 50%; width: 35px; height: 35px; cursor: pointer;
+        }
+
+    </style>
 </head>
-
 <body>
 
-<div class="poster">
+<audio id="bgMusic" loop>
+    <source src="https://www.bensound.com/bensound-music/bensound-thejazzpiano.mp3" type="audio/mpeg">
+</audio>
 
-  <!-- CLICK AREA -->
-  <div class="scratch-zone" onclick="drawFortune()"></div>
+<div class="container">
+    <button class="music-control" onclick="toggleMusic()" id="musicBtn">🔇</button>
+    
+    <div class="coffee-wrapper">
+        <div class="steam-container">
+            <div class="steam"></div>
+            <div class="steam"></div>
+            <div class="steam"></div>
+        </div>
+        <div class="coffee-logo"></div>
+    </div>
+    
+    <div style="font-family: 'Comfortaa'; letter-spacing: 3px; font-size: 0.7rem; color: #d7ccc8;">V&M VENDING</div>
+    
+    <div id="scratch-area">
+        <h1>Твоят кафе-късмет ✨</h1>
+        <div id="scratch-container">
+            <div class="watermark">V&M Vending</div>
+            <div id="fortune-overlay">
+                <div id="fortune-text"></div>
+            </div>
+            <canvas id="scratch-canvas" width="280" height="180"></canvas>
+        </div>
 
-  <!-- RESULT -->
-  <div class="fortune" id="fortune"></div>
+        <div style="margin-top: 20px;">
+            <div id="shareSection" style="display:none;">
+                <button class="test-btn" onclick="initScratch()">🔄 НОВ КЪСМЕТ</button>
+            </div>
+        </div>
+    </div>
 
+    <div id="limit-message" style="display:none; padding: 20px;">
+        <h2 style="color: var(--gold);">Опитай пак утре! 😊</h2>
+        <p>Вече изтегли своя късмет за днес.</p>
+        <button class="test-btn" onclick="clearMemory()">🔓 ОТКЛЮЧИ (ТЕСТ)</button>
+    </div>
+    
+    <a href="https://viber.click/359896746996" class="report-btn">🆘 Проблем с машина? Пиши ни.</a>
 </div>
 
 <script>
-const fortunes = [
-  "Днес късметът е на твоя страна ☕✨",
-  "Едно кафе – една добра новина",
-  "Понякога малката пауза променя целия ден",
-  "Очаква те нещо хубаво съвсем скоро",
-  "Това кафе беше точно навреме 🤎"
-];
+    const fortunes = [
+        "Твоят потенциал е безкраен – започни днес!",
+        "Днес кафето ще ти даде суперсили!",
+        "Очаква те усмивка от непознат.",
+        "Късметът е на твоя страна, действай смело!",
+        "Днес е денят на голямата печалба!",
+        "Любовта те чака зад ъгъла.",
+        "Твоето ниво на готиност днес е извън скалата!",
+        "Всичко ще се нареди само, докато си пиеш кафето."
+    ];
 
-function drawFortune() {
-  const box = document.getElementById("fortune");
-  const random = Math.floor(Math.random() * fortunes.length);
-  box.innerText = fortunes[random];
-  box.style.display = "flex";
-}
+    const canvas = document.getElementById('scratch-canvas');
+    const ctx = canvas.getContext('2d');
+    const music = document.getElementById('bgMusic');
+    const musicBtn = document.getElementById('musicBtn');
+    let isDrawing = false;
+
+    function toggleMusic() {
+        if (music.paused) { 
+            music.play().catch(() => alert("Кликнете първо на екрана, за да разрешите аудиото.")); 
+            musicBtn.innerText = "🔊"; 
+        } else { 
+            music.pause(); 
+            musicBtn.innerText = "🔇"; 
+        }
+    }
+
+    function initScratch() {
+        const lastDate = localStorage.getItem('last_vending_scratch');
+        const today = new Date().toDateString();
+
+        if (lastDate === today) {
+            document.getElementById('scratch-area').style.display = 'none';
+            document.getElementById('limit-message').style.display = 'block';
+            return;
+        }
+
+        ctx.globalCompositeOperation = 'source-over';
+        
+        // Настройка на текста
+        document.getElementById('fortune-text').innerText = fortunes[Math.floor(Math.random() * fortunes.length)];
+
+        // Покритие на канваса
+        const grad = ctx.createLinearGradient(0, 0, 280, 180);
+        grad.addColorStop(0, '#8d6e63');
+        grad.addColorStop(1, '#4e342e');
+        ctx.fillStyle = grad;
+        ctx.fillRect(0, 0, 280, 180);
+        
+        // Текст върху слоя за триене
+        ctx.font = 'bold 16px Montserrat';
+        ctx.fillStyle = '#FFD39A';
+        ctx.textAlign = 'center';
+        ctx.fillText('ИЗТЪРКАЙ ЗА КЪСМЕТ ☕', 140, 95);
+    }
+
+    function scratch(e) {
+        if (!isDrawing) return;
+        const rect = canvas.getBoundingClientRect();
+        const x = (e.clientX || (e.touches && e.touches[0].clientX)) - rect.left;
+        const y = (e.clientY || (e.touches && e.touches[0].clientY)) - rect.top;
+        
+        ctx.globalCompositeOperation = 'destination-out';
+        ctx.beginPath();
+        ctx.arc(x, y, 25, 0, Math.PI * 2);
+        ctx.fill();
+
+        // Показване на бутона за нов късмет след триене
+        document.getElementById('shareSection').style.display = 'block';
+        localStorage.setItem('last_vending_scratch', new Date().toDateString());
+    }
+
+    function clearMemory() {
+        localStorage.removeItem('last_vending_scratch');
+        location.reload();
+    }
+
+    canvas.addEventListener('mousedown', () => isDrawing = true);
+    canvas.addEventListener('touchstart', (e) => { isDrawing = true; e.preventDefault(); });
+    window.addEventListener('mouseup', () => isDrawing = false);
+    window.addEventListener('touchend', () => isDrawing = false);
+    canvas.addEventListener('mousemove', scratch);
+    canvas.addEventListener('touchmove', (e) => { scratch(e); e.preventDefault(); });
+
+    initScratch();
 </script>
 
 </body>
