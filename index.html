@@ -8,143 +8,111 @@
     <style>
         :root {
             --gold: #FFD39A;
-            --coffee-dark: #21120d;
+            --purple-light: #f3e5f5;
+            --coffee-dark: #2b1d19;
+            --glow-color: rgba(255, 211, 154, 0.6);
         }
 
         body {
             margin: 0; padding: 0;
             display: flex; justify-content: center; align-items: center;
             min-height: 100vh;
-            background: radial-gradient(circle, #4e342e 0%, #1a0f0c 100%);
+            /* Лилаво-бял към тъмен градиент */
+            background: radial-gradient(circle at top, #ffffff 0%, #e1bee7 30%, #2b1d19 100%);
             font-family: 'Montserrat', sans-serif;
-            color: #f3e5f5; text-align: center;
-            overflow: hidden;
+            color: #4e342e; text-align: center;
+            overflow-x: hidden;
         }
 
-        /* --- СВЕТЛИННИ ЕФЕКТИ В БЕКГРАУНДА --- */
-        body::before {
-            content: "";
-            position: absolute; width: 100%; height: 100%;
-            background: url('https://www.transparenttextures.com/patterns/stardust.png');
-            opacity: 0.3; pointer-events: none;
+        /* --- GLOW ЕФЕКТИ --- */
+        .container {
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(15px);
+            padding: 40px 25px;
+            border-radius: 40px;
+            width: 90%; max-width: 360px;
+            border: 2px solid var(--gold);
+            /* Силен Glow ефект */
+            box-shadow: 0 0 30px var(--glow-color), 0 10px 50px rgba(0,0,0,0.3);
+            position: relative;
+            z-index: 5;
         }
 
-        /* --- АНИМИРАНО ЛОГО ЧАША --- */
+        /* Анимирана чаша с Glow */
         .coffee-wrapper {
-            margin: 20px auto 10px;
+            margin: 10px auto 20px;
             position: relative;
             width: 80px; height: 80px;
+            filter: drop-shadow(0 0 10px var(--gold));
             animation: cupFloat 3s ease-in-out infinite;
         }
 
         @keyframes cupFloat {
             0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-5px); }
+            50% { transform: translateY(-8px); }
         }
 
         .coffee-logo {
             position: absolute; bottom: 10px; left: 15px;
             width: 50px; height: 35px;
-            background: var(--gold);
-            border-bottom-left-radius: 20px;
-            border-bottom-right-radius: 20px;
-            box-shadow: 0 0 15px rgba(255, 211, 154, 0.4);
+            background: var(--coffee-dark);
+            border-bottom-left-radius: 20px; border-bottom-right-radius: 20px;
         }
-
         .coffee-logo::after {
-            content: '';
-            position: absolute; top: 5px; right: -12px;
-            width: 12px; height: 18px;
-            border: 4px solid var(--gold);
-            border-radius: 50%;
-        }
-
-        .steam-container {
-            position: absolute; top: 0px; left: 25px;
-            display: flex; gap: 8px;
+            content: ''; position: absolute; top: 5px; right: -12px;
+            width: 12px; height: 18px; border: 4px solid var(--coffee-dark); border-radius: 50%;
         }
 
         .steam {
             width: 4px; height: 25px;
-            background: linear-gradient(to top, rgba(255,255,255,0.8), transparent);
-            border-radius: 10px;
-            filter: blur(1px);
-            animation: steamRise 2s infinite ease-out;
-            opacity: 0;
+            background: linear-gradient(to top, var(--coffee-dark), transparent);
+            border-radius: 10px; animation: steamRise 2s infinite ease-out; opacity: 0;
         }
-
-        .steam:nth-child(2) { animation-delay: 0.4s; left: 15px; }
-        .steam:nth-child(3) { animation-delay: 0.8s; left: 30px; }
 
         @keyframes steamRise {
-            0% { transform: translateY(0) scaleX(1); opacity: 0; }
-            30% { opacity: 0.6; }
-            100% { transform: translateY(-40px) scaleX(2); opacity: 0; }
+            0% { transform: translateY(0); opacity: 0; }
+            50% { opacity: 0.5; }
+            100% { transform: translateY(-40px); opacity: 0; }
         }
 
-        .container {
-            background: rgba(43, 24, 16, 0.75);
-            backdrop-filter: blur(15px);
-            padding: 30px 20px;
-            border-radius: 40px;
-            width: 90%; max-width: 360px;
-            border: 1px solid rgba(255, 211, 154, 0.3);
-            box-shadow: 0 0 40px rgba(0,0,0,0.8), inset 0 0 20px rgba(255,211,154,0.05);
-            z-index: 5;
-        }
+        h1 { font-family: 'Playfair Display', serif; font-style: italic; color: var(--coffee-dark); text-shadow: 0 0 8px rgba(0,0,0,0.1); }
 
-        h1 { font-family: 'Playfair Display', serif; font-style: italic; font-size: 1.5rem; color: var(--gold); text-shadow: 0 0 10px rgba(255,211,154,0.3); }
-
-        /* --- КЪСМЕТЧЕ С ВОДЕН ЗНАК --- */
         #scratch-container {
-            position: relative; width: 280px; height: 180px;
-            margin: 0 auto; border-radius: 20px; overflow: hidden;
-            background: #fffcf2;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            position: relative; width: 280px; height: 180px; margin: 0 auto;
+            border-radius: 20px; overflow: hidden; background: #fff;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
         }
 
-        #fortune-overlay {
-            position: absolute; width: 100%; height: 100%;
-            display: flex; flex-direction: column; align-items: center; justify-content: center;
-            z-index: 1;
+        canvas { position: absolute; top: 0; left: 0; z-index: 10; cursor: crosshair; touch-action: none; }
+
+        /* --- ФОРМА ЗА СИГНАЛ (MODAL) --- */
+        #reportModal {
+            display: none; position: fixed; z-index: 100; left: 0; top: 0;
+            width: 100%; height: 100%; background: rgba(0,0,0,0.6);
+            backdrop-filter: blur(5px);
+        }
+        .modal-content {
+            background: white; margin: 15% auto; padding: 30px;
+            border-radius: 30px; width: 80%; max-width: 320px; text-align: left;
+        }
+        .modal-content textarea {
+            width: 100%; height: 100px; border-radius: 15px; border: 1px solid #ddd;
+            padding: 10px; font-family: inherit; margin: 10px 0;
+        }
+        .send-btn {
+            background: var(--coffee-dark); color: white; border: none;
+            padding: 10px 20px; border-radius: 20px; cursor: pointer; width: 100%;
         }
 
-        /* Воден знак под късмета */
-        .watermark {
-            position: absolute;
-            font-size: 2.5rem;
-            font-weight: 900;
-            color: rgba(62, 39, 35, 0.05);
-            transform: rotate(-15deg);
-            white-space: nowrap;
-            pointer-events: none;
-            z-index: 0;
+        .report-btn { 
+            display: inline-block; margin-top: 25px; color: #7b1fa2; 
+            font-size: 0.8rem; text-decoration: underline; cursor: pointer; font-weight: 600;
         }
-
-        #fortune-text { 
-            color: #3e2723; font-weight: 600; font-size: 1.15rem; 
-            padding: 0 25px; line-height: 1.4; position: relative; z-index: 2;
-        }
-
-        canvas { position: absolute; top: 0; left: 0; z-index: 3; touch-action: none; cursor: crosshair; }
-
-        /* --- БУТОНИ И ЕЛЕМЕНТИ --- */
-        .test-btn {
-            background: linear-gradient(135deg, rgba(255,211,154,0.2), rgba(255,211,154,0.1));
-            border: 1px solid var(--gold); color: var(--gold);
-            padding: 10px 20px; border-radius: 25px;
-            font-size: 0.8rem; cursor: pointer; transition: 0.3s; margin-top: 15px;
-        }
-        .test-btn:hover { background: var(--gold); color: var(--coffee-dark); }
-
-        .report-btn { display: inline-block; margin-top: 25px; color: #bcaaa4; font-size: 0.75rem; text-decoration: none; opacity: 0.8; }
         
         .music-control { 
-            position: absolute; top: 20px; right: 20px; 
-            background: rgba(255, 211, 154, 0.1); border: 1px solid var(--gold);
-            color: var(--gold); border-radius: 50%; width: 35px; height: 35px; cursor: pointer;
+            position: absolute; top: 15px; right: 15px; background: white;
+            border: 1px solid var(--gold); border-radius: 50%; width: 35px; height: 35px; cursor: pointer;
         }
-
     </style>
 </head>
 <body>
@@ -157,40 +125,42 @@
     <button class="music-control" onclick="toggleMusic()" id="musicBtn">🔇</button>
     
     <div class="coffee-wrapper">
-        <div class="steam-container">
-            <div class="steam"></div>
-            <div class="steam"></div>
-            <div class="steam"></div>
+        <div style="display:flex; gap: 8px; position:absolute; top:-20px; left:25px;">
+            <div class="steam" style="animation-delay:0s"></div>
+            <div class="steam" style="animation-delay:0.4s"></div>
+            <div class="steam" style="animation-delay:0.8s"></div>
         </div>
         <div class="coffee-logo"></div>
     </div>
     
-    <div style="font-family: 'Comfortaa'; letter-spacing: 3px; font-size: 0.7rem; color: #d7ccc8;">V&M VENDING</div>
+    <div style="font-family: 'Comfortaa'; letter-spacing: 2px; font-size: 0.8rem; color: #7b1fa2;">V&M VENDING</div>
     
     <div id="scratch-area">
         <h1>Твоят кафе-късмет ✨</h1>
         <div id="scratch-container">
-            <div class="watermark">V&M Vending</div>
-            <div id="fortune-overlay">
-                <div id="fortune-text"></div>
+            <div id="fortune-overlay" style="display:flex; align-items:center; justify-content:center; height:100%; padding: 20px; color:#2b1d19; font-weight:600;">
+                <span id="fortune-text"></span>
             </div>
             <canvas id="scratch-canvas" width="280" height="180"></canvas>
-        </div>
-
-        <div style="margin-top: 20px;">
-            <div id="shareSection" style="display:none;">
-                <button class="test-btn" onclick="initScratch()">🔄 НОВ КЪСМЕТ</button>
-            </div>
         </div>
     </div>
 
     <div id="limit-message" style="display:none; padding: 20px;">
-        <h2 style="color: var(--gold);">Опитай пак утре! 😊</h2>
-        <p>Вече изтегли своя късмет за днес.</p>
-        <button class="test-btn" onclick="clearMemory()">🔓 ОТКЛЮЧИ (ТЕСТ)</button>
+        <h2 style="color: #7b1fa2;">Един късмет на ден! ☕</h2>
+        <p>Върни се утре за нова доза вдъхновение.</p>
     </div>
     
-    <a href="https://viber.click/359896746996" class="report-btn">🆘 Проблем с машина? Пиши ни.</a>
+    <div class="report-btn" onclick="openModal()">🆘 Проблем с машина? Сигнализирай тук</div>
+</div>
+
+<div id="reportModal">
+    <div class="modal-content">
+        <h3>Сигнал за проблем</h3>
+        <p style="font-size: 0.8rem;">Опишете проблема (номер на машина, адрес или повреда):</p>
+        <textarea id="reportText" placeholder="Напишете вашето съобщение тук..."></textarea>
+        <button class="send-btn" onclick="sendReport()">Изпрати Сигнал</button>
+        <button onclick="closeModal()" style="background:none; border:none; color:grey; width:100%; margin-top:10px; cursor:pointer;">Отказ</button>
+    </div>
 </div>
 
 <script>
@@ -212,42 +182,30 @@
     let isDrawing = false;
 
     function toggleMusic() {
-        if (music.paused) { 
-            music.play().catch(() => alert("Кликнете първо на екрана, за да разрешите аудиото.")); 
-            musicBtn.innerText = "🔊"; 
-        } else { 
-            music.pause(); 
-            musicBtn.innerText = "🔇"; 
+        if (music.paused) { music.play(); musicBtn.innerText = "🔊"; }
+        else { music.pause(); musicBtn.innerText = "🔇"; }
+    }
+
+    // Проверка за лимит на ден
+    function checkLimit() {
+        const lastDate = localStorage.getItem('vending_date');
+        const today = new Date().toDateString();
+        if (lastDate === today) {
+            document.getElementById('scratch-area').style.display = 'none';
+            document.getElementById('limit-message').style.display = 'block';
         }
     }
 
     function initScratch() {
-        const lastDate = localStorage.getItem('last_vending_scratch');
-        const today = new Date().toDateString();
-
-        if (lastDate === today) {
-            document.getElementById('scratch-area').style.display = 'none';
-            document.getElementById('limit-message').style.display = 'block';
-            return;
-        }
-
-        ctx.globalCompositeOperation = 'source-over';
-        
-        // Настройка на текста
+        checkLimit();
         document.getElementById('fortune-text').innerText = fortunes[Math.floor(Math.random() * fortunes.length)];
-
-        // Покритие на канваса
-        const grad = ctx.createLinearGradient(0, 0, 280, 180);
-        grad.addColorStop(0, '#8d6e63');
-        grad.addColorStop(1, '#4e342e');
-        ctx.fillStyle = grad;
-        ctx.fillRect(0, 0, 280, 180);
         
-        // Текст върху слоя за триене
+        ctx.fillStyle = '#8d6e63';
+        ctx.fillRect(0, 0, 280, 180);
         ctx.font = 'bold 16px Montserrat';
         ctx.fillStyle = '#FFD39A';
         ctx.textAlign = 'center';
-        ctx.fillText('ИЗТЪРКАЙ ЗА КЪСМЕТ ☕', 140, 95);
+        ctx.fillText('ИЗТЪРКАЙ ТУК ☕', 140, 95);
     }
 
     function scratch(e) {
@@ -257,18 +215,24 @@
         const y = (e.clientY || (e.touches && e.touches[0].clientY)) - rect.top;
         
         ctx.globalCompositeOperation = 'destination-out';
-        ctx.beginPath();
-        ctx.arc(x, y, 25, 0, Math.PI * 2);
-        ctx.fill();
+        ctx.beginPath(); ctx.arc(x, y, 25, 0, Math.PI * 2); ctx.fill();
 
-        // Показване на бутона за нов късмет след триене
-        document.getElementById('shareSection').style.display = 'block';
-        localStorage.setItem('last_vending_scratch', new Date().toDateString());
+        // Записваме, че потребителят е използвал късмета си за днес
+        localStorage.setItem('vending_date', new Date().toDateString());
     }
 
-    function clearMemory() {
-        localStorage.removeItem('last_vending_scratch');
-        location.reload();
+    // Функции за модала
+    function openModal() { document.getElementById('reportModal').style.display = 'block'; }
+    function closeModal() { document.getElementById('reportModal').style.display = 'none'; }
+    
+    function sendReport() {
+        const text = document.getElementById('reportText').value;
+        if (text.trim() === "") return alert("Моля, въведете описание!");
+        
+        // Пренасочване към Viber с готово съобщение
+        const viberUrl = "viber://forward?text=" + encodeURIComponent("СИГНАЛ ЗА ПРОБЛЕМ (V&M Vending): " + text);
+        window.location.href = viberUrl;
+        closeModal();
     }
 
     canvas.addEventListener('mousedown', () => isDrawing = true);
