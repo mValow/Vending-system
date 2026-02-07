@@ -1,275 +1,130 @@
 <!DOCTYPE html>
 <html lang="bg">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>V&M Vending - Късметчета</title>
-    <link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@400;700&family=Playfair+Display:ital,wght@1,600&display=swap" rel="stylesheet">
-    <style>
-        :root {
-            --gold: #d4a373;
-            --gold-light: #ffebd2;
-            --bg-dark: #0f0a09;
-        }
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>V&M Vending – Твоят кафе-късмет</title>
 
-        body {
-            margin: 0; padding: 0;
-            display: flex; justify-content: center; align-items: center;
-            min-height: 100vh;
-            background: #0c0807;
-            font-family: 'Comfortaa', cursive;
-            color: #f3e5f5;
-            overflow: hidden;
-            background-image: radial-gradient(circle at center, #2b1d19 0%, #0c0807 100%);
-        }
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600&family=Montserrat:wght@300;500&display=swap" rel="stylesheet">
 
-        /* --- СВЕТЛИННИ ТОЧКИ В ТЕКСТУРАТА --- */
-        body::before {
-            content: "";
-            position: absolute; width: 100%; height: 100%;
-            background: url('https://www.transparenttextures.com/patterns/stardust.png');
-            opacity: 0.15; pointer-events: none;
-        }
+  <style>
+    body {
+      margin: 0;
+      min-height: 100vh;
+      font-family: 'Montserrat', sans-serif;
+      background: radial-gradient(circle at top, #3a2a25, #0f0b0a);
+      color: #f5d9a6;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
 
-        /* --- ОСНОВЕН ПАНЕЛ (ТОЧНО КАТО НА СНИМКАТА) --- */
-        .glass-panel {
-            background: rgba(30, 20, 18, 0.4);
-            backdrop-filter: blur(25px);
-            -webkit-backdrop-filter: blur(25px);
-            width: 90%; max-width: 380px;
-            padding: 50px 20px;
-            border-radius: 80px; /* Големи заоблени ъгли */
-            border: 1px solid rgba(212, 163, 115, 0.2);
-            box-shadow: 0 50px 100px rgba(0,0,0,0.9);
-            position: relative;
-            z-index: 10;
-        }
+    .card {
+      width: 90%;
+      max-width: 420px;
+      padding: 30px;
+      border-radius: 30px;
+      background: rgba(255, 255, 255, 0.05);
+      backdrop-filter: blur(10px);
+      box-shadow: 0 0 40px rgba(255, 200, 120, 0.2);
+      text-align: center;
+      border: 1px solid rgba(255, 215, 150, 0.25);
+    }
 
-        /* --- АНИМИРАНО ЛОГО С ПАРА --- */
-        .logo-section {
-            position: relative;
-            margin-bottom: 20px;
-        }
+    .logo {
+      font-size: 28px;
+      margin-bottom: 5px;
+    }
 
-        .coffee-icon {
-            width: 80px; height: auto;
-            filter: drop-shadow(0 0 10px rgba(212, 163, 115, 0.5));
-            animation: cupFloat 4s ease-in-out infinite;
-        }
+    .subtitle {
+      font-family: 'Playfair Display', serif;
+      font-size: 22px;
+      margin-bottom: 25px;
+    }
 
-        .steam-wrap {
-            position: absolute; top: -10px; left: 50%;
-            transform: translateX(-50%);
-            display: flex; gap: 6px;
-        }
+    .scratch {
+      padding: 25px;
+      border-radius: 20px;
+      background: linear-gradient(145deg, #3b2a22, #1b1310);
+      border: 1px dashed rgba(255,215,150,0.4);
+      cursor: pointer;
+      transition: 0.3s;
+    }
 
-        .steam-line {
-            width: 3px; height: 25px;
-            background: rgba(255, 255, 255, 0.4);
-            border-radius: 10px;
-            animation: steamEffect 2s infinite ease-in;
-            opacity: 0;
-        }
-        .steam-line:nth-child(2) { animation-delay: 0.5s; }
-        .steam-line:nth-child(3) { animation-delay: 1s; }
+    .scratch:hover {
+      box-shadow: 0 0 20px rgba(255,215,150,0.3);
+    }
 
-        @keyframes steamEffect {
-            0% { transform: translateY(0) scaleX(1); opacity: 0; }
-            50% { opacity: 0.5; }
-            100% { transform: translateY(-40px) scaleX(2); opacity: 0; }
-        }
+    .scratch-text {
+      font-size: 18px;
+      letter-spacing: 1px;
+    }
 
-        @keyframes cupFloat {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-8px); }
-        }
+    .fortune {
+      margin-top: 20px;
+      font-size: 20px;
+      font-family: 'Playfair Display', serif;
+      display: none;
+    }
 
-        .brand-text {
-            font-size: 1.2rem; letter-spacing: 2px;
-            color: var(--gold-light); margin-bottom: 15px;
-        }
+    .footer {
+      margin-top: 30px;
+      font-size: 12px;
+      opacity: 0.8;
+    }
 
-        .headline {
-            font-family: 'Playfair Display', serif;
-            font-style: italic; font-size: 2rem;
-            color: var(--gold-light); margin-bottom: 30px;
-        }
+    .socials {
+      margin-top: 15px;
+    }
 
-        /* --- СКРЕЧ КАРТА (ДИЗАЙН КАТО НА СНИМКАТА) --- */
-        .scratch-box {
-            position: relative; width: 300px; height: 180px;
-            margin: 0 auto; border-radius: 40px; overflow: hidden;
-            background: #fdfaf5;
-            border: 2px solid rgba(212, 163, 115, 0.3);
-            box-shadow: inset 0 0 20px rgba(0,0,0,0.1);
-        }
-
-        .scratch-overlay {
-            position: absolute; width: 100%; height: 100%;
-            display: flex; align-items: center; justify-content: center;
-            z-index: 1; text-align: center;
-        }
-
-        .watermark {
-            position: absolute; font-size: 2rem; font-weight: bold;
-            color: rgba(62, 39, 35, 0.03); transform: rotate(-15deg);
-            white-space: nowrap; pointer-events: none;
-        }
-
-        #fortune-text {
-            color: #3e2723; font-weight: 600; font-size: 1.1rem;
-            padding: 0 30px; line-height: 1.4; z-index: 2;
-        }
-
-        canvas { position: absolute; top: 0; left: 0; z-index: 10; cursor: crosshair; touch-action: none; }
-
-        /* --- ЕКСТРИ --- */
-        .music-btn {
-            position: absolute; top: 30px; right: 30px;
-            background: rgba(212, 163, 115, 0.15); border: 1px solid var(--gold);
-            color: var(--gold); border-radius: 50%; width: 45px; height: 45px;
-            cursor: pointer; z-index: 100;
-        }
-
-        .btn-refresh {
-            margin-top: 25px; background: none;
-            border: 1px solid var(--gold); color: var(--gold);
-            padding: 12px 30px; border-radius: 30px;
-            font-family: 'Comfortaa'; cursor: pointer; transition: 0.3s;
-        }
-
-        .footer { margin-top: 40px; font-size: 0.8rem; color: #8d6e63; }
-        .viber-btn { color: var(--gold); text-decoration: none; font-weight: bold; }
-
-    </style>
+    .socials a {
+      margin: 0 8px;
+      color: #f5d9a6;
+      text-decoration: none;
+      font-weight: 500;
+    }
+  </style>
 </head>
 <body>
 
-<audio id="bgMusic" loop>
-    <source src="https://www.mboxdrive.com/Massive%20x%20Touch%20Me.mp3" type="audio/mpeg">
-</audio>
+  <div class="card">
+    <div class="logo">☕ V&M Vending</div>
+    <div class="subtitle">Твоят кафе-късмет ✨</div>
 
-<button class="music-btn" onclick="toggleMusic()" id="mBtn">🔇</button>
-
-<div class="glass-panel">
-    <div class="logo-section">
-        <div class="steam-wrap">
-            <div class="steam-line"></div>
-            <div class="steam-line"></div>
-            <div class="steam-line"></div>
-        </div>
-        <svg class="coffee-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M18 8H6C4.89543 8 4 8.89543 4 10V16C4 18.2091 5.79086 20 8 20H14C16.2091 20 18 18.2091 18 16V14.5M18 8C19.6569 8 21 9.34315 21 11C21 12.6569 19.6569 14 18 14V14.5M18 8V14.5" stroke="#d4a373" stroke-width="2" stroke-linecap="round"/>
-            <path d="M7 20L8 22H14L15 20" stroke="#d4a373" stroke-width="2" stroke-linecap="round"/>
-        </svg>
+    <div class="scratch" onclick="drawFortune()">
+      <div class="scratch-text">ИЗТЪРКАЙ ТУК ☕</div>
     </div>
 
-    <div class="brand-text">V&M Vending</div>
-    <div class="headline">Твоят кафе-късмет ✨</div>
+    <div id="fortune" class="fortune"></div>
 
-    <div id="scratch-area">
-        <div class="scratch-box">
-            <div class="watermark">V&M Vending</div>
-            <div class="scratch-overlay">
-                <div id="fortune-text"></div>
-            </div>
-            <canvas id="scratch-canvas" width="300" height="180"></canvas>
-        </div>
-        
-        <div id="controls" style="display:none;">
-            <button class="btn-refresh" onclick="initScratch()">🔄 НОВ КЪСМЕТ</button>
-        </div>
-    </div>
-
-    <div id="limit-msg" style="display:none; padding: 20px;">
-        <h2 style="color: var(--gold);">Един късмет на ден! ☕</h2>
-        <button class="btn-refresh" onclick="resetTest()">🔓 ТЕСТ</button>
+    <div class="socials">
+      <a href="#">Facebook</a>
+      <a href="#">Viber</a>
     </div>
 
     <div class="footer">
-        <div style="font-size: 1.5rem; margin-bottom: 10px;">📸</div>
-        Снимай своя момент и ни отбележи!<br><br>
-        <a href="viber://add?number=359896746996" class="viber-link">Проблем с машина? Пиши тук.</a><br><br>
-        С любов от V&M VENDING
+      Проблем с машината? Пиши ни тук.<br/>
+      С любов от V&M Vending ❤️
     </div>
-</div>
+  </div>
 
-<script>
-    // Всички твои късметчета
+  <script>
     const fortunes = [
-        "Твоят потенциал е безкраен – започни днес!", "Днес кафето ще ти даде суперсили!",
-        "Очаква те усмивка от непознат.", "Късметът е на твоя страна, действай смело!",
-        "Днес е денят на голямата печалба!", "Любовта те чака зад ъгъла.",
-        "Твоето ниво на готиност днес е извън скалата!", "Всичко ще се нареди само, докато си пиеш кафето.",
-        "Днес ще имаш повече енергия от батерията на телефона си!", "Късметът те следи... скрий се, за да те намери!",
-        "Печелиш свободно място за паркиране!", "Ще намериш 20 лева в стар джоб.",
-        "Очаква те ден, сладък като десерт.", "Нито един червен светофар днес!",
-        "Днес е ден за мързел... ама от утре!", "Комплимент, който ще те държи цяла седмица.",
-        "Всичко, което си пожелаеш днес, е на път към теб!", "Очаквай романтично обяснение в любов.",
-        "Някой тайно се възхищава на твоята усмивка.", "Едно съобщение ще разтопи сърцето ти."
+      "Днес ще ти върви повече, отколкото очакваш ☀️",
+      "Едно кафе – една добра новина ☕",
+      "Усмивката ти е най-големият ти късмет ✨",
+      "Днес си по-близо до целта си, отколкото мислиш 🚀",
+      "Малките паузи правят големите дни по-добри 🤎",
+      "Очаква те нещо приятно съвсем скоро 😉"
     ];
 
-    const canvas = document.getElementById('scratch-canvas');
-    const ctx = canvas.getContext('2d');
-    const music = document.getElementById('bgMusic');
-    const mBtn = document.getElementById('mBtn');
-    let isDrawing = false;
-
-    function toggleMusic() {
-        if (music.paused) { music.play(); mBtn.innerText = "🔊"; }
-        else { music.pause(); mBtn.innerText = "🔇"; }
+    function drawFortune() {
+      const fortuneBox = document.getElementById("fortune");
+      const random = Math.floor(Math.random() * fortunes.length);
+      fortuneBox.innerText = fortunes[random];
+      fortuneBox.style.display = "block";
     }
-
-    function initScratch() {
-        const last = localStorage.getItem('v_m_date');
-        const today = new Date().toDateString();
-
-        if (last === today) {
-            document.getElementById('scratch-area').style.display = 'none';
-            document.getElementById('limit-msg').style.display = 'block';
-            return;
-        }
-
-        document.getElementById('controls').style.display = 'none';
-        ctx.globalCompositeOperation = 'source-over';
-        
-        // Късмет
-        document.getElementById('fortune-text').innerText = fortunes[Math.floor(Math.random() * fortunes.length)];
-
-        // Покритие на скреч картата (Тъмно златисто)
-        const g = ctx.createLinearGradient(0, 0, 300, 180);
-        g.addColorStop(0, '#5d4037'); g.addColorStop(0.5, '#8d6e63'); g.addColorStop(1, '#442c23');
-        ctx.fillStyle = g;
-        ctx.fillRect(0, 0, 300, 180);
-        
-        ctx.font = 'bold 16px Comfortaa'; ctx.fillStyle = '#FFD39A'; ctx.textAlign = 'center';
-        ctx.fillText('ИЗТЪРКАЙ ТУК ☕', 150, 95);
-    }
-
-    function scratch(e) {
-        if (!isDrawing) return;
-        const r = canvas.getBoundingClientRect();
-        const x = (e.clientX || (e.touches && e.touches[0].clientX)) - r.left;
-        const y = (e.clientY || (e.touches && e.touches[0].clientY)) - r.top;
-        
-        ctx.globalCompositeOperation = 'destination-out';
-        ctx.beginPath(); ctx.arc(x, y, 25, 0, Math.PI * 2); ctx.fill();
-
-        document.getElementById('controls').style.display = 'block';
-        localStorage.setItem('v_m_date', new Date().toDateString());
-    }
-
-    function resetTest() { localStorage.removeItem('v_m_date'); location.reload(); }
-
-    canvas.addEventListener('mousedown', () => isDrawing = true);
-    canvas.addEventListener('touchstart', (e) => { isDrawing = true; e.preventDefault(); });
-    window.addEventListener('mouseup', () => isDrawing = false);
-    window.addEventListener('touchend', () => isDrawing = false);
-    canvas.addEventListener('mousemove', scratch);
-    canvas.addEventListener('touchmove', (e) => { scratch(e); e.preventDefault(); });
-
-    initScratch();
-</script>
+  </script>
 
 </body>
 </html>
